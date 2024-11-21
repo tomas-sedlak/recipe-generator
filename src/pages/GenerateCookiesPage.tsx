@@ -174,7 +174,7 @@ export default function GenerateCookiesPage() {
               type="text"
               className="flex-shrink-0 text-lg text-gray-900 border-0 bg-transparent font-medium focus:outline-none max-w-[2.5rem] text-center"
               value={quantity}
-              onChange={(event) => setQuantity(event.currentTarget.value)}
+              // onChange={(event) => setQuantity(event.currentTarget.value)}
             />
 
             <button
