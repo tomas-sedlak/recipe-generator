@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Card from "../components/Card";
+import { Link } from "react-router-dom";
 
 // Define types for items
 interface Item {
@@ -8,7 +9,7 @@ interface Item {
   stackImage: string;
 }
 
-const IMAGE_BASE_PATH = "/images/cookies"; // Base directory for images
+const IMAGE_BASE_PATH = "/assets/images/cookies"; // Base directory for images
 
 // Base Items with dynamic image paths
 const baseItems: Item[] = [
@@ -107,7 +108,34 @@ export default function GenerateCookiesPage() {
   };
 
   return (
-    <main className="max-w-screen-lg mx-auto p-4">
+    <main className="max-w-screen-lg mx-auto px-4 py-8">
+      <Link
+        to="/"
+        className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-4"
+      >
+        <svg
+          className="w-5 h-5 mr-2"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M10 19l-7-7m0 0l7-7m-7 7h18"
+          />
+        </svg>
+        Back
+      </Link>
+
+      <h1 className="text-4xl font-bold mb-2">
+        Create Your Custom Cookie Recipe
+      </h1>
+      <p className="text-gray-600 text-lg mb-8">
+        Choose your base, add mix-ins, and get a personalized recipe in seconds
+      </p>
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="col-span-2">
           <button onClick={handleRandomIngredients} className="bg-gray-200 rounded-lg" aria-label="Randomize Ingredients">
@@ -147,7 +175,7 @@ export default function GenerateCookiesPage() {
           </section>
         </div>
 
-        <div className="hidden md:block sticky top-4 h-fit">
+        <div className="hidden md:block sticky top-20 h-fit">
           <div className="aspect-square bg-gray-100 border-2 border-gray-200 rounded-2xl p-4 h-full">
             <div className="relative">
               <img src={baseItems.find((item: Item) => item.name === base)?.stackImage} className="absolute top-0 left-0" />
@@ -174,7 +202,7 @@ export default function GenerateCookiesPage() {
               type="text"
               className="flex-shrink-0 text-lg text-gray-900 border-0 bg-transparent font-medium focus:outline-none max-w-[2.5rem] text-center"
               value={quantity}
-              // onChange={(event) => setQuantity(event.currentTarget.value)}
+            // onChange={(event) => setQuantity(event.currentTarget.value)}
             />
 
             <button
