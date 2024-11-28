@@ -1,6 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { snakeCase } from "lodash";
 import Card from "../components/Card";
-import { Link } from "react-router-dom";
+import ArrowBack from "../components/ArrowBack";
+import Button from "../components/Button";
+import Preview from "../components/Preview";
 
 // Define types for items
 interface Item {
@@ -65,9 +69,10 @@ const mixinItems: Item[] = [
 ];
 
 export default function GenerateCookiesPage() {
-  const [base, setBase] = useState<string | undefined>();
+  const [base, setBase] = useState<string>(baseItems[0].name);
   const [mixins, setMixins] = useState<string[]>([]);
-  const [quantity, setQuantity] = useState<number>(30);
+
+  const navigate = useNavigate();
 
   const handleBaseClick = (item: string) => setBase(item);
 
@@ -104,45 +109,34 @@ export default function GenerateCookiesPage() {
 
 
   const handleGenerateRecipe = () => {
-    console.log("Generate recipe with:", { base, mixins });
+    const searchParams = new URLSearchParams({
+      base: base,
+      mixins: mixins.join(','),
+    });
+
+    navigate(`/cookie?${searchParams.toString()}`);
   };
 
   return (
-    <main className="max-w-screen-lg mx-auto px-4 py-8">
-      <Link
-        to="/"
-        className="inline-flex items-center text-gray-600 hover:text-gray-900 mb-4"
-      >
-        <svg
-          className="w-5 h-5 mr-2"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M10 19l-7-7m0 0l7-7m-7 7h18"
-          />
-        </svg>
-        Back
-      </Link>
+    <div className="max-w-screen-lg mx-auto px-4 py-8">
+      <div>
+        <ArrowBack />
 
-      <h1 className="text-4xl font-bold mb-2">
-        Create Your Custom Cookie Recipe
-      </h1>
-      <p className="text-gray-600 text-lg mb-8">
-        Choose your base, add mix-ins, and get a personalized recipe in seconds
-      </p>
+        <h1 className="text-4xl font-bold mb-2">
+          Create Your Custom Cookie Recipe
+        </h1>
+        <p className="text-gray-600 text-lg mb-8">
+          Choose your base, add mix-ins, and get a personalized recipe in seconds
+        </p>
+      </div>
+
+      <section className="mb-4">
+        <div className="w-full h-52 bg-gray-200"></div>
+      </section>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="col-span-2">
-          <button onClick={handleRandomIngredients} className="bg-gray-200 rounded-lg" aria-label="Randomize Ingredients">
-            <span className="block text-gray-900 text-lg font-semibold bg-gray-100 rounded-lg px-5 py-2.5 translate-y-[-4px] active:translate-y-0 transition-transform">
-              🎲 Random Ingredients
-            </span>
-          </button>
+          <Button variant="secondary" onClick={handleRandomIngredients}>🎲 Random Ingredients</Button>
 
           <section className="my-4">
             <h2 className="font-bold text-2xl">Choose Dough Base</h2>
@@ -151,7 +145,7 @@ export default function GenerateCookiesPage() {
                 <Card
                   key={item.name}
                   name={item.name}
-                  image={item.previewImage}
+                  image={`/images/cookies/${snakeCase(item.name)}_preview.png`}
                   selected={base === item.name}
                   onClick={() => handleBaseClick(item.name)}
                 />
@@ -166,7 +160,7 @@ export default function GenerateCookiesPage() {
                 <Card
                   key={item.name}
                   name={item.name}
-                  image={item.previewImage}
+                  image={`/images/cookies/${snakeCase(item.name)}_preview.png`}
                   selected={mixins.includes(item.name)}
                   onClick={() => handleMixinsClick(item.name)}
                 />
@@ -176,61 +170,16 @@ export default function GenerateCookiesPage() {
         </div>
 
         <div className="hidden md:block sticky top-20 h-fit">
-          <div className="aspect-square bg-gray-100 border-2 border-gray-200 rounded-2xl p-4 h-full">
-            <div className="relative">
-              <img src={baseItems.find((item: Item) => item.name === base)?.stackImage} className="absolute top-0 left-0" />
-              {mixins.map((value) =>
-                <img src={mixinItems.find((item: Item) => item.name === value)?.stackImage} className="absolute top-0 left-0" />
-              )}
-            </div>
-          </div>
+          <Preview folder="cookies" items={[base, ...mixins]} />
 
-          <div className="mt-4 relative flex items-center">
-            <p className="mr-4 font-medium text-lg">Quantity:</p>
+          <Button onClick={handleGenerateRecipe} className="mt-4">Generate My Recipe 📝</Button>
+        </div>
 
-            <button
-              type="button"
-              className="flex-shrink-0 bg-gray-100 inline-flex items-center justify-center border-2 border-gray-200 rounded-md w-6 h-6 p-1.5 focus:outline-none"
-              onClick={() => setQuantity((prevQuantity) => prevQuantity - 5)}
-            >
-              <svg className="text-gray-900" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16" />
-              </svg>
-            </button>
-
-            <input
-              type="text"
-              className="flex-shrink-0 text-lg text-gray-900 border-0 bg-transparent font-medium focus:outline-none max-w-[2.5rem] text-center"
-              value={quantity}
-            // onChange={(event) => setQuantity(event.currentTarget.value)}
-            />
-
-            <button
-              type="button"
-              className="flex-shrink-0 bg-gray-100 hover:bg-gray-200 inline-flex items-center justify-center border border-gray-300 rounded-md w-6 h-6 p-1.5 focus:outline-none"
-              onClick={() => setQuantity((prevQuantity) => prevQuantity + 5)}
-            >
-              <svg className="text-gray-900" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
-              </svg>
-            </button>
-          </div>
-
-          <button onClick={handleGenerateRecipe} className="mt-4 bg-green-600 rounded-lg" aria-label="Generate Recipe">
-            <span className="block text-white text-lg font-semibold bg-green-500 rounded-lg px-5 py-2.5 translate-y-[-4px] active:translate-y-0 transition-transform">
-              Generate My Recipe 📝
-            </span>
-          </button>
+        <div className="block md:hidden mt-6 text-center">
+          <Button onClick={handleGenerateRecipe}>Generate My Recipe 📝</Button>
         </div>
       </div>
+    </div>
 
-      <div className="block md:hidden mt-6 text-center">
-        <button onClick={handleGenerateRecipe} className="bg-green-600 rounded-lg" aria-label="Generate Recipe">
-          <span className="block text-white text-lg font-semibold bg-green-500 rounded-lg px-5 py-2.5 translate-y-[-4px] active:translate-y-0 transition-transform">
-            Generate My Recipe 📝
-          </span>
-        </button>
-      </div>
-    </main>
   );
 }

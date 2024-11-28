@@ -8,8 +8,9 @@ export default function Header() {
             <div className="max-w-screen-lg mx-auto px-4 h-16 flex items-center justify-between">
                 {/* Logo */}
                 <Link to="/" className="flex items-center space-x-2">
+                    <img src="/images/logo.png" alt="Mix Your Treat Logo" className="h-10 w-10" />
                     <span className="text-xl font-bold text-gray-900">
-                        Cookie Generator
+                        Mix Your Treat
                     </span>
                 </Link>
 
