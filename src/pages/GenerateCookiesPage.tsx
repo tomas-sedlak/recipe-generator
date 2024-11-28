@@ -2,12 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { snakeCase } from "lodash";
 import Card from "../components/Card";
-import ArrowBack from "../components/ArrowBack";
 import Button from "../components/Button";
 import Preview from "../components/Preview";
 
 // Base Items with dynamic image paths
-const baseItems: string[] = ["Classic", "Cocoa", "Oat"]
+const baseItems: string[] = ["Classic", "Cocoa", "Oat", "Peanut Butter", "Red Velvet"]
 
 // Mixin Items with dynamic image paths
 const mixinItems: string[] = ["Chocolate Chips", "Nuts", "Raisins", "Dried Fruits", "Candy", "Mini Marshmallows"]
@@ -64,9 +63,7 @@ export default function GenerateCookiesPage() {
   return (
     <div className="max-w-screen-lg mx-auto px-4 py-8">
       <div className="mb-8">
-        <ArrowBack />
-
-        <h1 className="text-4xl font-bold">
+        <h1 className="text-4xl font-bold mb-1">
           Create Your Custom Cookie Recipe
         </h1>
         <p className="text-gray-600 text-lg">
