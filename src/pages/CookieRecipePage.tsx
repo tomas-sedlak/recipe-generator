@@ -1,15 +1,20 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ArrowBack from '../components/ArrowBack';
 import Preview from '../components/Preview';
+import Button from '../components/Button';
+import { DownloadIcon, ShareIcon } from 'lucide-react';
 
 export default function CookieRecipePage() {
     const searchParams = new URLSearchParams(window.location.search);
-    const [useMetric, setUseMetric] = useState(false);
     const [checkedIngredients, setCheckedIngredients] = useState<Set<string>>(new Set());
 
     const base = searchParams.get('base') || "";
     const mixins = (searchParams.get('mixins') || "").split(',').filter(Boolean);
     const quantity = parseInt(searchParams.get('quantity') || "30");
+
+    const recipeTitle = `${base} Cookie Recipe${mixins.length > 0
+        ? ` with ${mixins.length > 1 ? mixins.slice(0, -1).join(', ') + ' and ' + mixins.slice(-1) : mixins[0]}`
+        : ''}`;
 
     const generateBaseIngredients = (quantity: number) => {
         const conversions = {
@@ -32,18 +37,8 @@ export default function CookieRecipePage() {
 
         return Object.entries(base).reduce((acc, [ingredient, amount]) => ({
             ...acc,
-            [ingredient]: `${amount.toFixed(2)} ${getUnit(ingredient, amount, conversions)}`
+            [ingredient]: `${amount.toFixed(2)} g`
         }), {});
-    };
-
-    const getUnit = (ingredient: string, amount: number, conversions: Record<string, number>) => {
-        if (ingredient === 'eggs') return 'large';
-        if (['vanilla', 'bakingSoda', 'salt'].includes(ingredient)) return 'tsp';
-
-        if (useMetric && conversions[ingredient]) {
-            return `g (${(amount * conversions[ingredient]).toFixed(0)}g)`;
-        }
-        return 'cups';
     };
 
     const getBaseModifications = () => {
@@ -80,14 +75,9 @@ export default function CookieRecipePage() {
     const mixinQuantities = getMixinQuantities();
 
     const handleDownload = () => {
-        // Create recipe content
-        const recipeTitle = `${base} Cookie Recipe${mixins.length > 0 
-            ? ` with ${mixins.length > 1 ? mixins.slice(0, -1).join(', ') + ' and ' + mixins.slice(-1) : mixins[0]}` 
-            : ''}`;
-        
         let content = `${recipeTitle}\n`;
         content += `Makes ${quantity} cookies\n\n`;
-        
+
         // Add ingredients
         content += "INGREDIENTS:\n";
         Object.entries(baseIngredients).forEach(([ingredient, amount]) => {
@@ -104,7 +94,7 @@ export default function CookieRecipePage() {
         if (baseModifications.note) {
             content += `Note: ${baseModifications.note}\n`;
         }
-        
+
         // Add instructions
         content += "\nINSTRUCTIONS:\n";
         content += "1. Preheat oven to 375°F (190°C)\n";
@@ -134,38 +124,35 @@ export default function CookieRecipePage() {
         window.URL.revokeObjectURL(url);
     };
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
+
     return (
         <div className="max-w-screen-lg mx-auto px-4 py-8 flex flex-col md:grid md:grid-cols-3 gap-6">
             <div className="md:col-span-2">
-                <div className="flex justify-between items-start mb-4">
+                <div className="mb-8">
                     <ArrowBack />
+
+                    <h1 className="text-4xl font-bold mb-4">
+                        {recipeTitle}
+                    </h1>
+
                     <div className="flex gap-2">
-                        <button 
-                            onClick={handleDownload}
-                            className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg flex items-center gap-2"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                                <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
-                            </svg>
-                            Download
-                        </button>
+                        <Button variant="secondary" onClick={handleDownload}>
+                            <DownloadIcon className="w-5 h-5" />
+                            Download Recipe
+                        </Button>
+
+                        <Button variant="secondary" onClick={handleDownload}>
+                            <ShareIcon className="w-5 h-5" />
+                            Share
+                        </Button>
                     </div>
                 </div>
 
-                <h1 className="text-4xl font-bold">
-                    {base} Cookie Recipe {mixins.length > 0 && `with ${mixins.length > 1
-                        ? mixins.slice(0, -1).join(', ') + ' and ' + mixins.slice(-1)
-                        : mixins[0]}`}
-                </h1>
-                <p className="text-lg mb-8">Makes {quantity} cookies</p>
-
-                <div className="md:hidden aspect-square bg-gray-100 border-2 border-gray-200 rounded-2xl p-4 mb-8">
-                    <div className="relative">
-                        <img src={`/assets/images/cookies/base/${base.toLocaleLowerCase()}.png`} className="absolute top-0 left-0" />
-                        {mixins.map((value) =>
-                            <img key={value} src={`/assets/images/cookies/mixins/${value.toLowerCase()}_stack.png`} className="absolute top-0 left-0" />
-                        )}
-                    </div>
+                <div className="md:hidden">
+                    <Preview folder="cookies" items={[base, ...mixins]} />
                 </div>
 
                 <section className="mb-4">
@@ -173,8 +160,8 @@ export default function CookieRecipePage() {
                     <ul className="space-y-2">
                         {Object.entries(baseIngredients).map(([ingredient, amount]) => (
                             <li key={ingredient} className="flex items-start gap-2">
-                                <input 
-                                    type="checkbox" 
+                                <input
+                                    type="checkbox"
                                     className="mt-1"
                                     checked={checkedIngredients.has(ingredient)}
                                     onChange={(e) => {
@@ -191,8 +178,8 @@ export default function CookieRecipePage() {
                         {Object.entries(baseModifications).map(([ingredient, amount]) => (
                             ingredient !== 'note' && (
                                 <li key={ingredient} className="flex items-start gap-2">
-                                    <input 
-                                        type="checkbox" 
+                                    <input
+                                        type="checkbox"
                                         className="mt-1"
                                         checked={checkedIngredients.has(ingredient)}
                                         onChange={(e) => {
@@ -209,8 +196,8 @@ export default function CookieRecipePage() {
                         ))}
                         {Object.entries(mixinQuantities).map(([ingredient, amount]) => (
                             <li key={ingredient} className="flex items-start gap-2">
-                                <input 
-                                    type="checkbox" 
+                                <input
+                                    type="checkbox"
                                     className="mt-1"
                                     checked={checkedIngredients.has(ingredient)}
                                     onChange={(e) => {

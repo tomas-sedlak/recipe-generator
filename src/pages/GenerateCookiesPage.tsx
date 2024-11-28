@@ -6,70 +6,14 @@ import ArrowBack from "../components/ArrowBack";
 import Button from "../components/Button";
 import Preview from "../components/Preview";
 
-// Define types for items
-interface Item {
-  name: string;
-  previewImage: string;
-  stackImage: string;
-}
-
-const IMAGE_BASE_PATH = "/assets/images/cookies"; // Base directory for images
-
 // Base Items with dynamic image paths
-const baseItems: Item[] = [
-  {
-    name: "Classic",
-    previewImage: `${IMAGE_BASE_PATH}/base/classic.png`,
-    stackImage: `${IMAGE_BASE_PATH}/base/classic.png`,
-  },
-  {
-    name: "Cocoa",
-    previewImage: `${IMAGE_BASE_PATH}/base/cocoa.png`,
-    stackImage: `${IMAGE_BASE_PATH}/base/cocoa.png`,
-  },
-  {
-    name: "Oat",
-    previewImage: `${IMAGE_BASE_PATH}/base/oat.png`,
-    stackImage: `${IMAGE_BASE_PATH}/base/oat.png`,
-  },
-];
+const baseItems: string[] = ["Classic", "Cocoa", "Oat"]
 
 // Mixin Items with dynamic image paths
-const mixinItems: Item[] = [
-  {
-    name: "Chocolate Chips",
-    previewImage: `${IMAGE_BASE_PATH}/mixins/chocolate_chips_preview.png`,
-    stackImage: `${IMAGE_BASE_PATH}/mixins/chocolate_chips_stack.png`,
-  },
-  {
-    name: "Nuts",
-    previewImage: `${IMAGE_BASE_PATH}/mixins/nuts_preview.png`,
-    stackImage: `${IMAGE_BASE_PATH}/mixins/nuts_stack.png`,
-  },
-  {
-    name: "Raisins",
-    previewImage: `${IMAGE_BASE_PATH}/mixins/raisins_preview.png`,
-    stackImage: `${IMAGE_BASE_PATH}/mixins/raisins_stack.png`,
-  },
-  {
-    name: "Dried Fruits",
-    previewImage: `${IMAGE_BASE_PATH}/mixins/dried_fruits_preview.png`,
-    stackImage: `${IMAGE_BASE_PATH}/mixins/dried_fruits_stack.png`,
-  },
-  {
-    name: "Candy",
-    previewImage: `${IMAGE_BASE_PATH}/mixins/candy_preview.png`,
-    stackImage: `${IMAGE_BASE_PATH}/mixins/candy_stack.png`,
-  },
-  {
-    name: "Mini Marshmallows",
-    previewImage: `${IMAGE_BASE_PATH}/mixins/mini_marshmallow_preview.png`,
-    stackImage: `${IMAGE_BASE_PATH}/mixins/mini_marshmallow_stack.png`,
-  },
-];
+const mixinItems: string[] = ["Chocolate Chips", "Nuts", "Raisins", "Dried Fruits", "Candy", "Mini Marshmallows"]
 
 export default function GenerateCookiesPage() {
-  const [base, setBase] = useState<string>(baseItems[0].name);
+  const [base, setBase] = useState<string>(baseItems[0]);
   const [mixins, setMixins] = useState<string[]>([]);
 
   const navigate = useNavigate();
@@ -100,7 +44,7 @@ export default function GenerateCookiesPage() {
     const shuffledMixins = [...mixinItems]
       .sort(() => Math.random() - 0.5) // Shuffle the array
       .slice(0, numMixins) // Select the random number of items
-      .map((item) => item.name);
+      .map((item) => item);
 
     // Update state
     setBase(randomBase);
@@ -119,13 +63,13 @@ export default function GenerateCookiesPage() {
 
   return (
     <div className="max-w-screen-lg mx-auto px-4 py-8">
-      <div>
+      <div className="mb-8">
         <ArrowBack />
 
-        <h1 className="text-4xl font-bold mb-2">
+        <h1 className="text-4xl font-bold">
           Create Your Custom Cookie Recipe
         </h1>
-        <p className="text-gray-600 text-lg mb-8">
+        <p className="text-gray-600 text-lg">
           Choose your base, add mix-ins, and get a personalized recipe in seconds
         </p>
       </div>
@@ -143,11 +87,11 @@ export default function GenerateCookiesPage() {
             <div className="mt-2 grid grid-cols-2 md:grid-cols-3 gap-2">
               {baseItems.map((item) => (
                 <Card
-                  key={item.name}
-                  name={item.name}
-                  image={`/images/cookies/${snakeCase(item.name)}_preview.png`}
-                  selected={base === item.name}
-                  onClick={() => handleBaseClick(item.name)}
+                  key={item}
+                  name={item}
+                  image={`/images/cookies/${snakeCase(item)}_preview.png`}
+                  selected={base === item}
+                  onClick={() => handleBaseClick(item)}
                 />
               ))}
             </div>
@@ -158,11 +102,11 @@ export default function GenerateCookiesPage() {
             <div className="mt-2 grid grid-cols-2 md:grid-cols-3 gap-2">
               {mixinItems.map((item) => (
                 <Card
-                  key={item.name}
-                  name={item.name}
-                  image={`/images/cookies/${snakeCase(item.name)}_preview.png`}
-                  selected={mixins.includes(item.name)}
-                  onClick={() => handleMixinsClick(item.name)}
+                  key={item}
+                  name={item}
+                  image={`/images/cookies/${snakeCase(item)}_preview.png`}
+                  selected={mixins.includes(item)}
+                  onClick={() => handleMixinsClick(item)}
                 />
               ))}
             </div>
