@@ -138,17 +138,13 @@ export default function CookieRecipePage() {
     const mixinIngredients = mixins.map(mixin => {
         const amount = mixins.length > 0 ? 1.5 / mixins.length : 0;
         // Format the fraction nicely
-        const fraction = amount === 0.5 ? "½" 
+        const fraction = amount === 0.5 ? "½"
             : amount === 0.75 ? "¾"
-            : amount === 0.25 ? "¼"
-            : amount === 1.5 ? "1½"
-            : amount.toString();
+                : amount === 0.25 ? "¼"
+                    : amount === 1.5 ? "1½"
+                        : amount.toString();
         return `${fraction} cup ${mixin}`;
     });
-
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
 
     const handleDownload = () => {
         const doc = new jsPDF();
@@ -182,8 +178,8 @@ export default function CookieRecipePage() {
         doc.setFontSize(12);
         const instructions = [...baseRecipe.instructions];
         if (mixins.length > 0) {
-            instructions.push(`Fold in ${mixins.length > 1 
-                ? mixins.slice(0, -1).join(', ') + ' and ' + mixins.slice(-1) 
+            instructions.push(`Fold in ${mixins.length > 1
+                ? mixins.slice(0, -1).join(', ') + ' and ' + mixins.slice(-1)
                 : mixins[0]} until evenly distributed`);
         }
 
@@ -217,19 +213,21 @@ export default function CookieRecipePage() {
                         {recipeTitle}
                     </h1>
 
-                    <div className="flex flex-wrap gap-x-4 gap-y-1 mb-4 text-gray-600">
+                    <div className="flex flex-wrap gap-x-2 gap-y-1 mb-4 text-gray-600">
                         <div>
                             <span className="font-medium">Prep Time:</span> {COOKIE_PREP_TIME}
                         </div>
-                        <div className="before:content-['|'] before:mr-4">
+                        <span>|</span>
+                        <div>
                             <span className="font-medium">Cook Time:</span> {COOKIE_COOK_TIME}
                         </div>
-                        <div className="before:content-['|'] before:mr-4">
+                        <span>|</span>
+                        <div>
                             <span className="font-medium">Yield:</span> {COOKIE_YIELD}
                         </div>
                     </div>
 
-                    <div className="flex gap-2">
+                    <div className="flex flex-col md:flex-row gap-2">
                         <Button variant="secondary" onClick={handleDownload}>
                             <DownloadIcon className="w-5 h-5" />
                             Download Recipe
@@ -270,8 +268,8 @@ export default function CookieRecipePage() {
                         ))}
                         {mixins.length > 0 && (
                             <li className="leading-relaxed">
-                                Fold in {mixins.length > 1 
-                                    ? mixins.slice(0, -1).join(', ') + ' and ' + mixins.slice(-1) 
+                                Fold in {mixins.length > 1
+                                    ? mixins.slice(0, -1).join(', ') + ' and ' + mixins.slice(-1)
                                     : mixins[0]} until evenly distributed
                             </li>
                         )}

@@ -15,24 +15,24 @@ export default function Header() {
                 </Link>
 
                 {/* Navigation */}
-                <nav className="flex items-center space-x-6">
+                <nav className="flex items-center gap-x-6">
                     <Link
-                        to="/"
-                        className={`text-lg ${location.pathname === '/'
-                                ? 'text-green-600 font-semibold'
+                        to="/cookies/generate"
+                        className={`text-lg ${location.pathname.startsWith('/cookies')
+                                ? 'text-purple-600 font-semibold'
                                 : 'text-gray-600 hover:text-gray-900'
                             }`}
                     >
-                        Home
+                        Cookies
                     </Link>
                     <Link
-                        to="/generate"
-                        className={`text-lg ${location.pathname === '/generate'
-                                ? 'text-green-600 font-semibold'
+                        to="/muffins/generate"
+                        className={`text-lg ${location.pathname.startsWith('/muffins')
+                                ? 'text-purple-600 font-semibold'
                                 : 'text-gray-600 hover:text-gray-900'
                             }`}
                     >
-                        Create Recipe
+                        Muffins
                     </Link>
                 </nav>
             </div>

@@ -57,14 +57,14 @@ export default function GenerateCookiesPage() {
       mixins: mixins.join(','),
     });
 
-    navigate(`/cookie?${searchParams.toString()}`);
+    navigate(`/cookies?${searchParams.toString()}`);
   };
 
   return (
     <div className="max-w-screen-lg mx-auto px-4 py-8">
       <div className="mb-8">
         <h1 className="text-4xl font-bold mb-1">
-          Create Your Custom Cookie Recipe
+          Create Your Custom <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Cookie</span> Recipe
         </h1>
         <p className="text-gray-600 text-lg">
           Choose your base, add mix-ins, and get a personalized recipe in seconds
