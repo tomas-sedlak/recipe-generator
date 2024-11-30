@@ -1,7 +1,6 @@
-import { useEffect } from 'react';
+import { DownloadIcon, ShareIcon } from 'lucide-react';
 import Preview from '../components/Preview';
 import Button from '../components/Button';
-import { DownloadIcon, ShareIcon } from 'lucide-react';
 import jsPDF from 'jspdf';
 
 // Add these constants at the top with baseRecipes
