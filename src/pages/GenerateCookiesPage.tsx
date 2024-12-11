@@ -34,7 +34,7 @@ export default function GenerateCookiesPage() {
 
   const handleRandomIngredients = () => {
     // Randomly select a base
-    const randomBase = baseItems[Math.floor(Math.random() * baseItems.length)].name;
+    const randomBase = baseItems[Math.floor(Math.random() * baseItems.length)];
 
     // Determine the number of mix-ins to select (0 to 3)
     const numMixins = Math.floor(Math.random() * 4); // Random number between 0 and 3
