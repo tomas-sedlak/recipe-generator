@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { snakeCase } from "lodash";
+import { ShuffleIcon } from "lucide-react";
 import Card from "../components/Card";
 import Button from "../components/Button";
 import Preview from "../components/Preview";
@@ -73,7 +74,10 @@ export default function GenerateCookiesPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="col-span-2">
-          <Button variant="secondary" onClick={handleRandomIngredients}>🎲 Random Ingredients</Button>
+          <Button variant="secondary" onClick={handleRandomIngredients}>
+            <ShuffleIcon className="w-5 h-5" />
+            Random Ingredients
+          </Button>
 
           <section className="my-4">
             <h2 className="font-bold text-2xl">Choose Dough Base</h2>
@@ -108,12 +112,10 @@ export default function GenerateCookiesPage() {
 
         <div className="hidden md:block sticky top-20 h-fit">
           <Preview folder="cookies" items={[base, ...mixins]} />
-
-          <Button onClick={handleGenerateRecipe} className="mt-4">Generate My Recipe 📝</Button>
         </div>
 
-        <div className="col-span-2 block md:hidden mt-6 text-center">
-          <Button onClick={handleGenerateRecipe}>Generate My Recipe 📝</Button>
+        <div className="col-span-2 text-center">
+          <Button onClick={handleGenerateRecipe}>Generate Recipe</Button>
         </div>
       </div>
     </div>
