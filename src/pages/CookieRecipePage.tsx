@@ -1,4 +1,5 @@
-import { DownloadIcon, ShareIcon } from 'lucide-react';
+import { useState } from 'react';
+import { DownloadIcon, LinkIcon } from 'lucide-react';
 import Preview from '../components/Preview';
 import Button from '../components/Button';
 import jsPDF from 'jspdf';
@@ -123,6 +124,155 @@ const baseRecipes = {
     }
 };
 
+const baseNutrition = {
+    "Classic": {
+        calories: 483,
+        fat: 23,
+        saturatedFat: 13,
+        cholesterol: 81,
+        sodium: 355,
+        carbohydrates: 65,
+        fiber: 3,
+        sugar: 39,
+        protein: 6
+    },
+    "Cocoa": {
+        calories: 516,
+        fat: 26,
+        saturatedFat: 16,
+        cholesterol: 81,
+        sodium: 371,
+        carbohydrates: 71,
+        fiber: 6,
+        sugar: 42,
+        protein: 10
+    },
+    "Oat": {
+        calories: 548,
+        fat: 23,
+        saturatedFat: 13,
+        cholesterol: 81,
+        sodium: 339,
+        carbohydrates: 81,
+        fiber: 6,
+        sugar: 35,
+        protein: 10
+    },
+    "Peanut Butter": {
+        calories: 581,
+        fat: 35,
+        saturatedFat: 16,
+        cholesterol: 81,
+        sodium: 403,
+        carbohydrates: 61,
+        fiber: 3,
+        sugar: 42,
+        protein: 16
+    },
+    "Red Velvet": {
+        calories: 532,
+        fat: 26,
+        saturatedFat: 16,
+        cholesterol: 97,
+        sodium: 387,
+        carbohydrates: 74,
+        fiber: 3,
+        sugar: 45,
+        protein: 6
+    }
+};
+
+const mixinNutrition = {
+    "chocolate chips": {
+        calories: 545,
+        fat: 31,
+        saturatedFat: 19,
+        cholesterol: 0,
+        sodium: 24,
+        carbohydrates: 63,
+        fiber: 4,
+        sugar: 57,
+        protein: 6
+    },
+    "white chocolate": {
+        calories: 549,
+        fat: 32,
+        saturatedFat: 20,
+        cholesterol: 21,
+        sodium: 90,
+        carbohydrates: 59,
+        fiber: 0,
+        sugar: 59,
+        protein: 6
+    },
+    "nuts": {
+        calories: 607,
+        fat: 54,
+        saturatedFat: 4,
+        cholesterol: 0,
+        sodium: 1,
+        carbohydrates: 24,
+        fiber: 11,
+        sugar: 6,
+        protein: 21
+    },
+    "m&ms": {
+        calories: 479,
+        fat: 20,
+        saturatedFat: 12,
+        cholesterol: 5,
+        sodium: 79,
+        carbohydrates: 71,
+        fiber: 2,
+        sugar: 63,
+        protein: 4
+    },
+    "sprinkles": {
+        calories: 389,
+        fat: 0,
+        saturatedFat: 0,
+        cholesterol: 0,
+        sodium: 37,
+        carbohydrates: 96,
+        fiber: 0,
+        sugar: 93,
+        protein: 0
+    }
+};
+
+// Add this function to calculate combined nutrition values
+const calculateTotalNutrition = (base: string, mixins: string[]) => {
+    const baseNutritionValues = baseNutrition[base] || baseNutrition["Classic"];
+
+    if (mixins.length === 0) return baseNutritionValues;
+
+    // Calculate the proportion for base and mixins
+    const baseRatio = 0.8; // Base is 80% of the recipe
+    const mixinRatio = 0.2 / mixins.length; // Remaining 20% split between mixins
+
+    // Start with base values multiplied by ratio
+    const totalNutrition = Object.entries(baseNutritionValues).reduce((acc, [key, value]) => {
+        acc[key] = value * baseRatio;
+        return acc;
+    }, {});
+
+    // Add mixin values
+    mixins.forEach(mixin => {
+        if (mixinNutrition[mixin]) {
+            Object.entries(mixinNutrition[mixin]).forEach(([key, value]) => {
+                totalNutrition[key] += value * mixinRatio;
+            });
+        }
+    });
+
+    // Round all values
+    Object.keys(totalNutrition).forEach(key => {
+        totalNutrition[key] = Math.round(totalNutrition[key]);
+    });
+
+    return totalNutrition;
+};
+
 export default function CookieRecipePage() {
     const searchParams = new URLSearchParams(window.location.search);
 
@@ -144,6 +294,8 @@ export default function CookieRecipePage() {
                         : amount.toString();
         return `${fraction} cup ${mixin}`;
     });
+
+    const [showTooltip, setShowTooltip] = useState(false);
 
     const handleDownload = () => {
         const doc = new jsPDF();
@@ -190,6 +342,37 @@ export default function CookieRecipePage() {
                 yPosition += lineHeight;
             });
         });
+        yPosition += lineHeight;
+
+        // Add Nutrition Facts section
+        doc.setFontSize(16);
+        doc.text('Nutrition Facts:', 20, yPosition);
+        yPosition += lineHeight;
+
+        // Add nutrition facts table
+        doc.setFontSize(12);
+        const nutritionData = calculateTotalNutrition(base, mixins);
+        doc.text(`Per 100g:`, 25, yPosition);
+        yPosition += lineHeight;
+        doc.text(`Calories: ${nutritionData.calories}`, 25, yPosition);
+        yPosition += lineHeight;
+        doc.text(`Total Fat: ${nutritionData.fat}g`, 25, yPosition);
+        yPosition += lineHeight;
+        doc.text(`Saturated Fat: ${nutritionData.saturatedFat}g`, 25, yPosition);
+        yPosition += lineHeight;
+        doc.text(`Cholesterol: ${nutritionData.cholesterol}mg`, 25, yPosition);
+        yPosition += lineHeight;
+        doc.text(`Sodium: ${nutritionData.sodium}mg`, 25, yPosition);
+        yPosition += lineHeight;
+        doc.text(`Total Carbohydrates: ${nutritionData.carbohydrates}g`, 25, yPosition);
+        yPosition += lineHeight;
+        doc.text(`Dietary Fiber: ${nutritionData.fiber}g`, 25, yPosition);
+        yPosition += lineHeight;
+        doc.text(`Sugars: ${nutritionData.sugar}g`, 25, yPosition);
+        yPosition += lineHeight;
+        doc.text(`Protein: ${nutritionData.protein}g`, 25, yPosition);
+        yPosition += lineHeight;
+        doc.text(`Nutrition information is automatically calculated, so should only be used as an approximation.`, 25, yPosition);
 
         // Save the PDF
         doc.save(`${recipeTitle.toLowerCase().replace(/ /g, '_')}.pdf`);
@@ -197,12 +380,16 @@ export default function CookieRecipePage() {
 
     const handleShare = async () => {
         try {
+            if (showTooltip) return;
             await navigator.clipboard.writeText(window.location.href);
-            alert('Recipe URL copied to clipboard!');
+            setShowTooltip(true);
+            setTimeout(() => setShowTooltip(false), 2000);
         } catch (err) {
             alert('Failed to copy URL to clipboard');
         }
     };
+
+    const nutritionData = calculateTotalNutrition(base, mixins);
 
     return (
         <div className="max-w-screen-lg mx-auto px-4 py-8 flex flex-col md:grid md:grid-cols-3 gap-6">
@@ -227,15 +414,23 @@ export default function CookieRecipePage() {
                     </div>
 
                     <div className="flex flex-col md:flex-row gap-2">
-                        <Button variant="secondary" onClick={handleDownload}>
+                        <Button onClick={handleDownload}>
                             <DownloadIcon className="w-5 h-5" />
-                            Download Recipe
+                            Download PDF
                         </Button>
 
-                        <Button variant="secondary" onClick={handleShare}>
-                            <ShareIcon className="w-5 h-5" />
-                            Share
-                        </Button>
+                        <div className="relative">
+                            <Button variant="secondary" onClick={handleShare} className="w-full">
+                                <LinkIcon className="w-5 h-5" />
+                                Copy Link
+                            </Button>
+                            {showTooltip && (
+                                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-2 py-1 bg-gray-800 text-white text-sm rounded shadow-lg whitespace-nowrap">
+                                    <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-gray-800 rotate-45"></div>
+                                    Link copied!
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
 
@@ -255,24 +450,75 @@ export default function CookieRecipePage() {
                     </ul>
                 </section>
 
-                <section className="mb-4">
-                    <div className="w-full h-64 bg-gray-200"></div>
-                </section>
-
-                <section>
+                <section className="mb-8">
                     <h2 className="text-2xl font-bold mb-4">Instructions</h2>
-                    <ol className="list-decimal list-inside space-y-4">
+                    <ol className="list-none space-y-4">
                         {baseRecipe.instructions.map((instruction, index) => (
-                            <li key={index} className="leading-relaxed">{instruction}</li>
+                            <li key={index} className="flex items-start gap-2">
+                                <div className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-500 text-white flex items-center justify-center text-sm font-semibold">
+                                    {index + 1}
+                                </div>
+                                <span>{instruction}</span>
+                            </li>
                         ))}
                         {mixins.length > 0 && (
-                            <li className="leading-relaxed">
-                                Fold in {mixins.length > 1
-                                    ? mixins.slice(0, -1).join(', ') + ' and ' + mixins.slice(-1)
-                                    : mixins[0]} until evenly distributed
+                            <li className="flex items-start gap-4">
+                                <div className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-500 text-white flex items-center justify-center text-sm font-semibold">
+                                    {baseRecipe.instructions.length + 1}
+                                </div>
+                                <span>
+                                    Fold in {mixins.length > 1
+                                        ? mixins.slice(0, -1).join(', ') + ' and ' + mixins.slice(-1)
+                                        : mixins[0]} until evenly distributed
+                                </span>
                             </li>
                         )}
                     </ol>
+                </section>
+
+                <section>
+                    <h2 className="text-2xl font-bold mb-4">Nutrition Per 100g</h2>
+                    <table className="sm:max-w-[320px] w-full border rounded-lg">
+                        <tbody>
+                            <tr className="border-b even:bg-gray-100 odd:bg-white">
+                                <td className="font-medium py-1 px-2">Calories:</td>
+                                <td className="text-right px-2 py-1">{nutritionData.calories} kcal</td>
+                            </tr>
+                            <tr className="border-b even:bg-gray-100 odd:bg-white">
+                                <td className="font-medium py-1 px-2">Total Fat:</td>
+                                <td className="text-right px-2 py-1">{nutritionData.fat}g</td>
+                            </tr>
+                            <tr className="border-b even:bg-gray-100 odd:bg-white">
+                                <td className="font-medium py-1 px-2">Saturated Fat:</td>
+                                <td className="text-right px-2 py-1">{nutritionData.saturatedFat}g</td>
+                            </tr>
+                            <tr className="border-b even:bg-gray-100 odd:bg-white">
+                                <td className="font-medium py-1 px-2">Cholesterol:</td>
+                                <td className="text-right px-2 py-1">{nutritionData.cholesterol}mg</td>
+                            </tr>
+                            <tr className="border-b even:bg-gray-100 odd:bg-white">
+                                <td className="font-medium py-1 px-2">Sodium:</td>
+                                <td className="text-right px-2 py-1">{nutritionData.sodium}mg</td>
+                            </tr>
+                            <tr className="border-b even:bg-gray-100 odd:bg-white">
+                                <td className="font-medium py-1 px-2">Total Carbohydrates:</td>
+                                <td className="text-right px-2 py-1">{nutritionData.carbohydrates}g</td>
+                            </tr>
+                            <tr className="border-b even:bg-gray-100 odd:bg-white">
+                                <td className="font-medium py-1 px-2">Dietary Fiber:</td>
+                                <td className="text-right px-2 py-1">{nutritionData.fiber}g</td>
+                            </tr>
+                            <tr className="border-b even:bg-gray-100 odd:bg-white">
+                                <td className="font-medium py-1 px-2">Sugars:</td>
+                                <td className="text-right px-2 py-1">{nutritionData.sugar}g</td>
+                            </tr>
+                            <tr className="border-b even:bg-gray-100 odd:bg-white">
+                                <td className="font-medium py-1 px-2">Protein:</td>
+                                <td className="text-right px-2 py-1">{nutritionData.protein}g</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p className="text-gray-500 mt-2">Nutrition information is automatically calculated, so should only be used as an approximation.</p>
                 </section>
             </div>
 

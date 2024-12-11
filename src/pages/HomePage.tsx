@@ -1,7 +1,7 @@
+import { EyeIcon, FileDownIcon, CheckIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "../components/Button";
-import Preview from "../components/Preview";
 
 // Base Items with dynamic image paths
 const baseItems: string[] = ["Classic", "Cocoa", "Oat", "Peanut Butter", "Red Velvet"]
@@ -27,7 +27,7 @@ export default function HomePage() {
     }, [cookiePreview]);
 
     return (
-        <div className="py-8 px-4 mx-auto max-w-screen-lg">
+        <div className="pt-8 pb-12 px-4 mx-auto max-w-screen-lg">
             {/* Hero Section */}
             <div className="text-center mb-16 relative">
                 <h1 className="mb-4 text-4xl font-bold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl">
@@ -48,7 +48,7 @@ export default function HomePage() {
 
             {/* Recipe Cards */}
             <div className="grid md:grid-cols-2 gap-4">
-                {/* <Link to="/cookies/generate" className="relative h-48 rounded-xl overflow-hidden group">
+                <Link to="/cookies/generate" className="relative h-48 rounded-xl overflow-hidden group">
                     <div
                         className="absolute inset-0 bg-cover bg-center transition-transform duration-300 group-hover:scale-110"
                         style={{ backgroundImage: 'url("/images/cookies/cookies.jpg")' }}
@@ -68,21 +68,21 @@ export default function HomePage() {
                     <div className="absolute bottom-0 left-0 p-4 text-white">
                         <h3 className="text-2xl font-bold">Custom Muffins</h3>
                     </div>
-                </Link> */}
+                </Link>
 
-                <Link to="/cookies/generate" className="bg-gray-200 rounded-xl">
+                {/* <Link to="/cookies/generate" className="bg-gray-200 rounded-xl">
                     <div className="flex items-center gap-4 p-4 bg-gray-100 rounded-xl translate-y-[-4px] active:translate-y-0 transition-transform">
                         <img src="/images/cookies/cookies_bg.png" alt="Custom Muffins" className="aspect-square object-cover rounded-lg w-[40%]" />
-                        <h3 className="text-lg font-semibold">Generate Custom Cookies</h3>
+                        <h3 className="text-2xl font-semibold">Custom Cookies</h3>
                     </div>
                 </Link>
 
                 <Link to="/muffins/generate" className="bg-gray-200 rounded-xl">
                     <div className="flex items-center gap-4 p-4 bg-gray-100 rounded-xl translate-y-[-4px] active:translate-y-0 transition-transform">
-                        <img src="/images/muffins/muffins.jpg" alt="Custom Muffins" className="aspect-square object-cover rounded-lg w-[40%]" />
-                        <h3 className="text-lg font-semibold">Generate Custom muffins</h3>
+                        <img src="/images/muffins/muffins.jpg" alt="Custom Muffins" className="aspect-square object-cover rounded-2xl w-[40%]" />
+                        <h3 className="text-2xl font-semibold">Custom muffins</h3>
                     </div>
-                </Link>
+                </Link> */}
             </div>
 
             {/* Features Section */}
@@ -90,14 +90,17 @@ export default function HomePage() {
                 <h2 className="text-3xl font-bold mb-8">Why Use Our Recipe Generator?</h2>
                 <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
                     <div>
+                        <EyeIcon className="w-8 h-8 mx-auto mb-4 text-blue-600" />
                         <h3 className="text-xl font-semibold mb-2">Interactive Preview</h3>
                         <p className="text-gray-600">See your creation come to life as you customize ingredients</p>
                     </div>
                     <div>
+                        <FileDownIcon className="w-8 h-8 mx-auto mb-4 text-blue-600" />
                         <h3 className="text-xl font-semibold mb-2">Instant PDF Export</h3>
                         <p className="text-gray-600">Download and share your custom recipes with one click</p>
                     </div>
                     <div>
+                        <CheckIcon className="w-8 h-8 mx-auto mb-4 text-blue-600" />
                         <h3 className="text-xl font-semibold mb-2">Tested Recipes</h3>
                         <p className="text-gray-600">All base recipes are kitchen-tested for perfect results</p>
                     </div>

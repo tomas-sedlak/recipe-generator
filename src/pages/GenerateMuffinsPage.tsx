@@ -11,14 +11,14 @@ const baseItems: string[] = ["Classic", "Chocolate", "Banana", "Blueberry", "Who
 // Mixin Items with dynamic image paths
 const mixinItems: string[] = ["Chocolate Chips", "Nuts", "Berries", "Cream Cheese", "Streusel", "Cinnamon", "Coconut", "Poppy Seeds"];
 
-const toppingItems: string[] = ["Streusel Crumb", "Sugar Glaze", "Cream Cheese Frosting", "Turbinado Sugar", "Oat Crumble", "None"];
+const toppingItems: string[] = ["Streusel Crumb", "Sugar Glaze", "Cream Cheese Frosting", "Turbinado Sugar", "Oat Crumble"];
 
 const specialAdditions: string[] = ["Extra Moist", "Protein Boost", "Gluten Free", "Sugar Free", "Vegan"];
 
 export default function GenerateMuffinsPage() {
   const [base, setBase] = useState<string>(baseItems[0]);
   const [mixins, setMixins] = useState<string[]>([]);
-  const [topping, setTopping] = useState<string>("None");
+  const [topping, setTopping] = useState<string | null>(null);
   const [special, setSpecial] = useState<string | null>(null);
 
   const navigate = useNavigate();
@@ -38,7 +38,9 @@ export default function GenerateMuffinsPage() {
     });
   };
 
-  const handleToppingClick = (item: string) => setTopping(item);
+  const handleToppingClick = (item: string) => {
+    setTopping(topping === item ? null : item);
+  };
 
   const handleSpecialClick = (item: string) => {
     setSpecial(special === item ? null : item);
@@ -73,7 +75,7 @@ export default function GenerateMuffinsPage() {
     const searchParams = new URLSearchParams({
       base: base,
       mixins: mixins.join(','),
-      topping: topping,
+      ...(topping && { topping }),
       ...(special && { special }),
     });
 
@@ -90,10 +92,6 @@ export default function GenerateMuffinsPage() {
           Choose your base, add mix-ins, and get a personalized recipe in seconds
         </p>
       </div>
-
-      <section className="mb-4">
-        <div className="w-full h-52 bg-gray-200"></div>
-      </section>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="col-span-2">
@@ -130,7 +128,7 @@ export default function GenerateMuffinsPage() {
           </section>
 
           <section className="my-4">
-            <h2 className="font-bold text-2xl">Choose Topping</h2>
+            <h2 className="font-bold text-2xl">Choose Topping <span className="text-gray-500 text-sm">(Optional)</span></h2>
             <div className="mt-2 grid grid-cols-2 md:grid-cols-3 gap-2">
               {toppingItems.map((item) => (
                 <Card
@@ -163,7 +161,7 @@ export default function GenerateMuffinsPage() {
         <div className="hidden md:block sticky top-20 h-fit">
           <Preview 
             folder="muffins" 
-            items={[base, ...mixins, topping !== "None" ? topping : "", special].filter(Boolean)} 
+            items={[base, ...mixins, topping, special].filter(Boolean)} 
           />
           <Button onClick={handleGenerateRecipe} className="mt-4">Generate My Recipe 📝</Button>
         </div>
