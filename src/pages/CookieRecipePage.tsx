@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Clock8Icon, ClockIcon, DownloadIcon, LinkIcon, UtensilsIcon } from 'lucide-react';
+import { CheckIcon, Clock8Icon, ClockIcon, DownloadIcon, LinkIcon, UtensilsIcon } from 'lucide-react';
 import Preview from '../components/Preview';
 import Button from '../components/Button';
 import jsPDF from 'jspdf';
@@ -493,7 +493,7 @@ export default function CookieRecipePage() {
                                             ? 'bg-purple-500 border-purple-500 text-white' 
                                             : 'border-gray-300'}`}
                                 >
-                                    {checkedIngredients.has(ingredient) && '✓'}
+                                    {checkedIngredients.has(ingredient) && <CheckIcon className="w-4 h-4" />}
                                 </button>
                                 <span className={checkedIngredients.has(ingredient) ? 'line-through text-gray-500' : ''}>
                                     {ingredient}
@@ -509,7 +509,7 @@ export default function CookieRecipePage() {
                                             ? 'bg-purple-500 border-purple-500 text-white' 
                                             : 'border-gray-300'}`}
                                 >
-                                    {checkedIngredients.has(ingredient) && '✓'}
+                                    {checkedIngredients.has(ingredient) && <CheckIcon className="w-4 h-4" />}
                                 </button>
                                 <span className={checkedIngredients.has(ingredient) ? 'line-through text-gray-500' : ''}>
                                     {ingredient}
@@ -531,7 +531,7 @@ export default function CookieRecipePage() {
                             </li>
                         ))}
                         {mixins.length > 0 && (
-                            <li className="flex items-start gap-4">
+                            <li className="flex items-start gap-2">
                                 <div className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-500 text-white flex items-center justify-center text-sm font-semibold">
                                     {baseRecipe.instructions.length + 1}
                                 </div>
@@ -547,7 +547,7 @@ export default function CookieRecipePage() {
 
                 <section className="mb-8">
                     <h2 className="text-2xl font-bold mb-4">Recipe Notes</h2>
-                    <ul className="list-disc list-inside space-y-2">
+                    <ul className="list-disc list-outside pl-4 space-y-2">
                         {recipeNotes[base]?.map((note, index) => (
                             <li key={index}>{note}</li>
                         ))}
