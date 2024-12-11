@@ -35,7 +35,7 @@ export default function Header() {
                             : 'text-gray-600 hover:text-gray-900'
                             }`}
                     >
-                        Cookies
+                        🍪 Cookies
                     </Link>
                     <Link
                         to="/muffins/generate"
@@ -44,7 +44,7 @@ export default function Header() {
                             : 'text-gray-600 hover:text-gray-900'
                             }`}
                     >
-                        Muffins
+                        🧁 Muffins
                     </Link>
                 </nav>
             </div>
@@ -60,7 +60,7 @@ export default function Header() {
                             : 'text-gray-600 hover:bg-gray-50'
                             }`}
                     >
-                        Cookies
+                        🍪 Cookies
                     </Link>
                     <Link
                         to="/muffins/generate"
@@ -70,7 +70,7 @@ export default function Header() {
                             : 'text-gray-600 hover:bg-gray-50'
                             }`}
                     >
-                        Muffins
+                        🧁 Muffins
                     </Link>
                 </nav>
             </div>
