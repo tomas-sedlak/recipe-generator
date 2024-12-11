@@ -71,10 +71,6 @@ export default function GenerateCookiesPage() {
         </p>
       </div>
 
-      <section className="mb-4">
-        <div className="w-full h-52 bg-gray-200"></div>
-      </section>
-
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="col-span-2">
           <Button variant="secondary" onClick={handleRandomIngredients}>🎲 Random Ingredients</Button>
@@ -116,7 +112,7 @@ export default function GenerateCookiesPage() {
           <Button onClick={handleGenerateRecipe} className="mt-4">Generate My Recipe 📝</Button>
         </div>
 
-        <div className="block md:hidden mt-6 text-center">
+        <div className="col-span-2 block md:hidden mt-6 text-center">
           <Button onClick={handleGenerateRecipe}>Generate My Recipe 📝</Button>
         </div>
       </div>

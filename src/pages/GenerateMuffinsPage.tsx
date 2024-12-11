@@ -168,7 +168,7 @@ export default function GenerateMuffinsPage() {
           <Button onClick={handleGenerateRecipe} className="mt-4">Generate My Recipe 📝</Button>
         </div>
 
-        <div className="block md:hidden mt-6 text-center">
+        <div className="col-span-2 block md:hidden mt-6 text-center">
           <Button onClick={handleGenerateRecipe}>Generate My Recipe 📝</Button>
         </div>
       </div>
