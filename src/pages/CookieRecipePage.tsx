@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { DownloadIcon, LinkIcon } from 'lucide-react';
+import { Clock8Icon, ClockIcon, DownloadIcon, LinkIcon, UtensilsIcon } from 'lucide-react';
 import Preview from '../components/Preview';
 import Button from '../components/Button';
 import jsPDF from 'jspdf';
@@ -273,6 +273,35 @@ const calculateTotalNutrition = (base: string, mixins: string[]) => {
     return totalNutrition;
 };
 
+// Add recipe notes after baseRecipes
+const recipeNotes = {
+    "Classic": [
+        "For softer cookies, reduce baking time by 1-2 minutes",
+        "Chill dough for 24 hours for enhanced flavor",
+        "Room temperature eggs work best"
+    ],
+    "Cocoa": [
+        "Don't overbake - cookies will set as they cool",
+        "Use Dutch-processed cocoa for richer flavor",
+        "Add a pinch of espresso powder to enhance chocolate flavor"
+    ],
+    "Oat": [
+        "Quick oats can be used but will give a different texture",
+        "Toast oats beforehand for nuttier flavor",
+        "Let dough rest 30 minutes for softer cookies"
+    ],
+    "Peanut Butter": [
+        "Natural peanut butter may affect texture",
+        "Crunchy peanut butter adds nice texture",
+        "Don't overmix after adding flour"
+    ],
+    "Red Velvet": [
+        "Gel food coloring works better than liquid",
+        "Don't skip the buttermilk - it's key for texture",
+        "Add white chocolate chips for classic flavor"
+    ]
+};
+
 export default function CookieRecipePage() {
     const searchParams = new URLSearchParams(window.location.search);
 
@@ -296,6 +325,19 @@ export default function CookieRecipePage() {
     });
 
     const [showTooltip, setShowTooltip] = useState(false);
+
+    // Add state for checked ingredients
+    const [checkedIngredients, setCheckedIngredients] = useState<Set<string>>(new Set());
+
+    const toggleIngredient = (ingredient: string) => {
+        const newChecked = new Set(checkedIngredients);
+        if (newChecked.has(ingredient)) {
+            newChecked.delete(ingredient);
+        } else {
+            newChecked.add(ingredient);
+        }
+        setCheckedIngredients(newChecked);
+    };
 
     const handleDownload = () => {
         const doc = new jsPDF();
@@ -392,28 +434,29 @@ export default function CookieRecipePage() {
     const nutritionData = calculateTotalNutrition(base, mixins);
 
     return (
-        <div className="max-w-screen-lg mx-auto px-4 py-8 flex flex-col md:grid md:grid-cols-3 gap-6">
+        <div className="max-w-screen-lg mx-auto p-4 flex flex-col md:grid md:grid-cols-3 gap-6">
             <div className="md:col-span-2">
                 <div className="mb-8">
                     <h1 className="text-4xl font-bold mb-1">
                         {recipeTitle}
                     </h1>
 
-                    <div className="flex flex-wrap gap-x-2 gap-y-1 mb-4 text-gray-600">
-                        <div>
-                            <span className="font-medium">Prep Time:</span> {COOKIE_PREP_TIME}
+                    <div className="mt-2 flex flex-wrap flex-col md:flex-row gap-x-4 gap-y-2 mb-4 text-gray-600">
+                        <div className="flex items-center gap-2">
+                            <ClockIcon className="w-5 h-5" />
+                            <p><span className="text-gray-900 font-semibold">Prep Time:</span> {COOKIE_PREP_TIME}</p>
                         </div>
-                        <span>|</span>
-                        <div>
-                            <span className="font-medium">Cook Time:</span> {COOKIE_COOK_TIME}
+                        <div className="flex items-center gap-2">
+                            <Clock8Icon className="w-5 h-5" />
+                            <p><span className="text-gray-900 font-semibold">Cook Time:</span> {COOKIE_COOK_TIME}</p>
                         </div>
-                        <span>|</span>
-                        <div>
-                            <span className="font-medium">Yield:</span> {COOKIE_YIELD}
+                        <div className="flex items-center gap-2">
+                            <UtensilsIcon className="w-5 h-5" />
+                            <p><span className="text-gray-900 font-semibold">Yield:</span> {COOKIE_YIELD}</p>
                         </div>
                     </div>
 
-                    <div className="flex flex-col md:flex-row gap-2">
+                    <div className="mt-2 flex flex-col md:flex-row gap-2">
                         <Button onClick={handleDownload}>
                             <DownloadIcon className="w-5 h-5" />
                             Download PDF
@@ -440,12 +483,38 @@ export default function CookieRecipePage() {
 
                 <section className="mb-8">
                     <h2 className="text-2xl font-bold mb-4">Ingredients</h2>
-                    <ul className="list-disc list-inside space-y-2">
+                    <ul className="list-none space-y-2">
                         {baseRecipe.ingredients.map((ingredient, index) => (
-                            <li key={`base-${index}`}>{ingredient}</li>
+                            <li key={`base-${index}`} className="flex items-center gap-2">
+                                <button
+                                    onClick={() => toggleIngredient(ingredient)}
+                                    className={`w-5 h-5 rounded border flex-shrink-0 flex items-center justify-center
+                                        ${checkedIngredients.has(ingredient) 
+                                            ? 'bg-purple-500 border-purple-500 text-white' 
+                                            : 'border-gray-300'}`}
+                                >
+                                    {checkedIngredients.has(ingredient) && '✓'}
+                                </button>
+                                <span className={checkedIngredients.has(ingredient) ? 'line-through text-gray-500' : ''}>
+                                    {ingredient}
+                                </span>
+                            </li>
                         ))}
                         {mixinIngredients.map((ingredient, index) => (
-                            <li key={`mixin-${index}`}>{ingredient}</li>
+                            <li key={`mixin-${index}`} className="flex items-center gap-2">
+                                <button
+                                    onClick={() => toggleIngredient(ingredient)}
+                                    className={`w-5 h-5 rounded border flex-shrink-0 flex items-center justify-center
+                                        ${checkedIngredients.has(ingredient) 
+                                            ? 'bg-purple-500 border-purple-500 text-white' 
+                                            : 'border-gray-300'}`}
+                                >
+                                    {checkedIngredients.has(ingredient) && '✓'}
+                                </button>
+                                <span className={checkedIngredients.has(ingredient) ? 'line-through text-gray-500' : ''}>
+                                    {ingredient}
+                                </span>
+                            </li>
                         ))}
                     </ul>
                 </section>
@@ -474,6 +543,15 @@ export default function CookieRecipePage() {
                             </li>
                         )}
                     </ol>
+                </section>
+
+                <section className="mb-8">
+                    <h2 className="text-2xl font-bold mb-4">Recipe Notes</h2>
+                    <ul className="list-disc list-inside space-y-2">
+                        {recipeNotes[base]?.map((note, index) => (
+                            <li key={index}>{note}</li>
+                        ))}
+                    </ul>
                 </section>
 
                 <section>
@@ -518,7 +596,7 @@ export default function CookieRecipePage() {
                             </tr>
                         </tbody>
                     </table>
-                    <p className="text-gray-500 mt-2">Nutrition information is automatically calculated, so should only be used as an approximation.</p>
+                    <p className="text-gray-500 text-sm mt-2">Nutrition information is automatically calculated, so should only be used as an approximation.</p>
                 </section>
             </div>
 
