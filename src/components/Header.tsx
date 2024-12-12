@@ -7,8 +7,8 @@ export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     return (
-        <header className="bg-white sticky top-0 z-50">
-            <div className="max-w-screen-lg mx-auto px-4 h-16 flex items-center justify-between border-b border-gray-100">
+        <header className="bg-white sticky top-0 z-50 border-b border-gray-100">
+            <div className="max-w-screen-lg mx-auto px-4 h-16 flex items-center justify-between">
                 {/* Logo */}
                 <Link to="/" className="flex items-center space-x-2">
                     <img src="/images/logo.png" alt="Mix Your Treat Logo" className="h-10 w-10" />
@@ -51,7 +51,7 @@ export default function Header() {
 
             {/* Mobile Navigation */}
             <div className={`sm:hidden ${isMenuOpen ? 'block' : 'hidden'}`}>
-                <nav className="flex flex-col bg-white border-b border-gray-100">
+                <nav className="flex flex-col bg-white">
                     <Link
                         to="/cookies/generate"
                         onClick={() => setIsMenuOpen(false)}
