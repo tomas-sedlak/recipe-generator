@@ -305,7 +305,7 @@ const recipeNotes = {
 export default function CookieRecipePage() {
     const searchParams = new URLSearchParams(window.location.search);
 
-    const base = searchParams.get('base') || "";
+    const base = searchParams.get('base') || "Classic";
     const mixins = (searchParams.get('mixins') || "").split(',').filter(Boolean);
 
     const recipeTitle = `${base} Cookie Recipe${mixins.length > 0
