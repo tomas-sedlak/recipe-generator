@@ -1,8 +1,8 @@
 import { EyeIcon, FileDownIcon, CheckIcon, ArrowRightIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Button from "../components/Button";
-import Preview from "../components/Preview";
+import Button from "../components/common/Button";
+import Preview from "../components/common/Preview";
 
 // Base Items with dynamic image paths
 const baseItems: string[] = ["Classic", "Cocoa", "Oat", "Peanut Butter", "Red Velvet"]

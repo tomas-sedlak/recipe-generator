@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { snakeCase } from "lodash";
 import { ShuffleIcon } from "lucide-react";
-import Card from "../components/Card";
-import Button from "../components/Button";
-import Preview from "../components/Preview";
+import Card from "../components/common/Card";
+import Button from "../components/common/Button";
+import Preview from "../components/common/Preview";
 
 // Base Items with dynamic image paths
 const baseItems: string[] = ["Classic", "Cocoa", "Oat", "Peanut Butter", "Red Velvet"]

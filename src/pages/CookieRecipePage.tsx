@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { CheckIcon, Clock8Icon, ClockIcon, DownloadIcon, LinkIcon, UtensilsIcon } from 'lucide-react';
 import { generateRecipePDF } from '../utils/generateRecipePDF';
-import Preview from '../components/Preview';
-import Button from '../components/Button';
+import Preview from '../components/common/Preview';
+import Button from '../components/common/Button';
 
 // Add these constants at the top with baseRecipes
 const COOKIE_PREP_TIME = "15 minutes";
@@ -339,7 +339,10 @@ export default function CookieRecipePage() {
         setCheckedIngredients(newChecked);
     };
 
+    const [isDownloading, setIsDownloading] = useState(false);
+
     const handleDownload = async () => {
+        setIsDownloading(true);
         const instructions = [...baseRecipe.instructions];
         if (mixins.length > 0) {
             instructions.push(`Fold in ${mixins.length > 1
@@ -361,6 +364,7 @@ export default function CookieRecipePage() {
 
         const doc = await generateRecipePDF(recipeData);
         doc.save(`${recipeTitle.toLowerCase().replace(/ /g, '_')}.pdf`);
+        setIsDownloading(false);
     };
 
     const handleShare = async () => {
@@ -380,11 +384,11 @@ export default function CookieRecipePage() {
         <div className="max-w-screen-lg mx-auto p-4 flex flex-col md:grid md:grid-cols-3 gap-6">
             <div className="md:col-span-2">
                 <div className="mb-8">
-                    <h1 className="text-4xl font-bold mb-1">
+                    <h1 className="text-4xl font-bold mb-4">
                         {recipeTitle}
                     </h1>
 
-                    <div className="mt-2 flex flex-wrap flex-col md:flex-row gap-x-4 gap-y-2 mb-4 text-gray-600">
+                    <div className="mt-2 flex flex-wrap flex-col md:flex-row gap-x-4 gap-y-2 mb-6 text-gray-600">
                         <div className="flex items-center gap-2">
                             <ClockIcon className="w-5 h-5" />
                             <p><span className="text-gray-900 font-semibold">Prep Time:</span> {COOKIE_PREP_TIME}</p>
@@ -399,8 +403,8 @@ export default function CookieRecipePage() {
                         </div>
                     </div>
 
-                    <div className="mt-2 flex flex-col md:flex-row gap-2">
-                        <Button onClick={handleDownload}>
+                    <div className="flex flex-col md:flex-row gap-2">
+                        <Button onClick={handleDownload} loading={isDownloading}>
                             <DownloadIcon className="w-5 h-5" />
                             Download PDF
                         </Button>

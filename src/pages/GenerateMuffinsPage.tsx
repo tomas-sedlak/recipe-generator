@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { snakeCase } from "lodash";
-import Card from "../components/Card";
-import Button from "../components/Button";
-import Preview from "../components/Preview";
+import Card from "../components/common/Card";
+import Button from "../components/common/Button";
+import Preview from "../components/common/Preview";
 
 // Base Items with dynamic image paths
 const baseItems: string[] = ["Classic", "Chocolate", "Banana", "Blueberry", "Whole Wheat", "Pumpkin", "Carrot", "Lemon"];
