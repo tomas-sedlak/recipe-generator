@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import ScrollToTop from './components/ScrollToTop';
-import Header from './components/Header';
-import Footer from './components/Footer';
+import ScrollToTop from './components/common/ScrollToTop';
+import Header from './components/sections/Header';
+import Footer from './components/sections/Footer';
 
 // Import pages
 import HomePage from './pages/HomePage';
