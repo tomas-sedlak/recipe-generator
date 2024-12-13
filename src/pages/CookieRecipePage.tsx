@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { CheckIcon, Clock8Icon, ClockIcon, DownloadIcon, LinkIcon, UtensilsIcon } from 'lucide-react';
+import { generateRecipePDF } from '../utils/generateRecipePDF';
 import Preview from '../components/Preview';
 import Button from '../components/Button';
-import jsPDF from 'jspdf';
 
 // Add these constants at the top with baseRecipes
 const COOKIE_PREP_TIME = "15 minutes";
@@ -339,36 +339,7 @@ export default function CookieRecipePage() {
         setCheckedIngredients(newChecked);
     };
 
-    const handleDownload = () => {
-        const doc = new jsPDF();
-        const lineHeight = 10;
-        let yPosition = 20;
-
-        // Add title
-        doc.setFontSize(20);
-        doc.text(recipeTitle, 20, yPosition);
-        yPosition += lineHeight * 2;
-
-        // Add Ingredients section
-        doc.setFontSize(16);
-        doc.text('Ingredients:', 20, yPosition);
-        yPosition += lineHeight;
-
-        // Add ingredients list
-        doc.setFontSize(12);
-        [...baseRecipe.ingredients, ...mixinIngredients].forEach(ingredient => {
-            doc.text(`• ${ingredient}`, 25, yPosition);
-            yPosition += lineHeight;
-        });
-        yPosition += lineHeight;
-
-        // Add Instructions section
-        doc.setFontSize(16);
-        doc.text('Instructions:', 20, yPosition);
-        yPosition += lineHeight;
-
-        // Add instructions list
-        doc.setFontSize(12);
+    const handleDownload = async () => {
         const instructions = [...baseRecipe.instructions];
         if (mixins.length > 0) {
             instructions.push(`Fold in ${mixins.length > 1
@@ -376,47 +347,19 @@ export default function CookieRecipePage() {
                 : mixins[0]} until evenly distributed`);
         }
 
-        instructions.forEach((instruction, index) => {
-            // Split long instructions into multiple lines
-            const lines = doc.splitTextToSize(`${index + 1}. ${instruction}`, 170);
-            lines.forEach(line => {
-                doc.text(line, 25, yPosition);
-                yPosition += lineHeight;
-            });
-        });
-        yPosition += lineHeight;
+        const recipeData = {
+            title: recipeTitle,
+            ingredients: [...baseRecipe.ingredients, ...mixinIngredients],
+            instructions,
+            nutritionData: calculateTotalNutrition(base, mixins),
+            baseType: base,
+            mixins: mixins,
+            prepTime: COOKIE_PREP_TIME,
+            cookTime: COOKIE_COOK_TIME,
+            yield: COOKIE_YIELD
+        };
 
-        // Add Nutrition Facts section
-        doc.setFontSize(16);
-        doc.text('Nutrition Facts:', 20, yPosition);
-        yPosition += lineHeight;
-
-        // Add nutrition facts table
-        doc.setFontSize(12);
-        const nutritionData = calculateTotalNutrition(base, mixins);
-        doc.text(`Per 100g:`, 25, yPosition);
-        yPosition += lineHeight;
-        doc.text(`Calories: ${nutritionData.calories}`, 25, yPosition);
-        yPosition += lineHeight;
-        doc.text(`Total Fat: ${nutritionData.fat}g`, 25, yPosition);
-        yPosition += lineHeight;
-        doc.text(`Saturated Fat: ${nutritionData.saturatedFat}g`, 25, yPosition);
-        yPosition += lineHeight;
-        doc.text(`Cholesterol: ${nutritionData.cholesterol}mg`, 25, yPosition);
-        yPosition += lineHeight;
-        doc.text(`Sodium: ${nutritionData.sodium}mg`, 25, yPosition);
-        yPosition += lineHeight;
-        doc.text(`Total Carbohydrates: ${nutritionData.carbohydrates}g`, 25, yPosition);
-        yPosition += lineHeight;
-        doc.text(`Dietary Fiber: ${nutritionData.fiber}g`, 25, yPosition);
-        yPosition += lineHeight;
-        doc.text(`Sugars: ${nutritionData.sugar}g`, 25, yPosition);
-        yPosition += lineHeight;
-        doc.text(`Protein: ${nutritionData.protein}g`, 25, yPosition);
-        yPosition += lineHeight;
-        doc.text(`Nutrition information is automatically calculated, so should only be used as an approximation.`, 25, yPosition);
-
-        // Save the PDF
+        const doc = await generateRecipePDF(recipeData);
         doc.save(`${recipeTitle.toLowerCase().replace(/ /g, '_')}.pdf`);
     };
 
