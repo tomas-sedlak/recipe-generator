@@ -97,7 +97,7 @@ export default function HomePage() {
                         How It Works
                     </h2>
                     <div className="grid md:grid-cols-3 gap-x-6 gap-y-4">
-                        <div className="bg-white p-6 rounded-2xl border-2">
+                        <div className="bg-white p-6 rounded-2xl border-2 hover:scale-[1.05] transition-all duration-300">
                             <div className="w-12 h-12 bg-indigo-100 rounded-full inline-flex items-center justify-center mb-4">
                                 <span className="text-2xl font-bold text-indigo-600">1</span>
                             </div>
@@ -108,7 +108,7 @@ export default function HomePage() {
                                 Start with a classic cookie or muffin base - from traditional vanilla to decadent chocolate and more!
                             </p>
                         </div>
-                        <div className="bg-white p-6 rounded-2xl border-2">
+                        <div className="bg-white p-6 rounded-2xl border-2 hover:scale-[1.05] transition-all duration-300">
                             <div className="w-12 h-12 bg-violet-100 rounded-full inline-flex items-center justify-center mb-4">
                                 <span className="text-2xl font-bold text-violet-600">2</span>
                             </div>
@@ -119,7 +119,7 @@ export default function HomePage() {
                                 Customize with up to 3 mix-ins like chocolate chips, nuts, or fruits. Watch your creation come to life in real-time!
                             </p>
                         </div>
-                        <div className="bg-white p-6 rounded-2xl border-2">
+                        <div className="bg-white p-6 rounded-2xl border-2 hover:scale-[1.05] transition-all duration-300">
                             <div className="w-12 h-12 bg-purple-100 rounded-full inline-flex items-center justify-center mb-4">
                                 <span className="text-2xl font-bold text-purple-600">3</span>
                             </div>
@@ -145,7 +145,7 @@ export default function HomePage() {
                         { Icon: FileDownIcon, title: "Instant PDF Export", desc: "Download and share your custom recipes with one click" },
                         { Icon: CheckIcon, title: "Tested Recipes", desc: "All base recipes are kitchen-tested for perfect results" }
                     ].map(({ Icon, title, desc }) => (
-                        <div key={title} className="py-8 px-4 rounded-2xl bg-gray-100">
+                        <div key={title} className="py-8 px-4 rounded-2xl bg-gray-100 hover:scale-[1.05] transition-all duration-300">
                             <Icon className="w-10 h-10 mx-auto mb-4 text-blue-600" />
                             <h3 className="text-xl font-semibold mb-3">{title}</h3>
                             <p className="text-gray-600">{desc}</p>
