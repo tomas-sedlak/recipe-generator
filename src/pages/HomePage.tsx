@@ -48,13 +48,13 @@ export default function HomePage() {
                 <div className="grid md:grid-cols-2 gap-x-6 gap-y-4">
                     <Link
                         to="/cookies/generate"
-                        className="group relative bg-gradient-to-br from-blue-50 to-purple-50 rounded-3xl p-4 transition-all"
+                        className="group relative bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-4 transition-all"
                     >
                         <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
                             <img
                                 src="/images/cookies/cookies.jpg"
                                 alt="Cookie Generator"
-                                className="relative aspect-square w-full md:w-[40%] rounded-2xl object-cover"
+                                className="relative aspect-square w-full md:w-[40%] rounded-xl object-cover"
                             />
                             <div className="flex-1">
                                 <h3 className="text-2xl font-bold mb-2 text-gray-900">Cookies</h3>
@@ -69,13 +69,13 @@ export default function HomePage() {
 
                     <Link
                         to="/muffins/generate"
-                        className="group relative bg-gradient-to-br from-purple-50 to-pink-50 rounded-3xl p-4"
+                        className="group relative bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-4"
                     >
                         <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
                             <img
                                 src="/images/muffins/muffins.jpg"
                                 alt="Muffin Generator"
-                                className="relative aspect-square w-full md:w-[40%] rounded-2xl object-cover"
+                                className="relative aspect-square w-full md:w-[40%] rounded-xl object-cover"
                             />
                             <div className="flex-1">
                                 <h3 className="text-2xl font-bold mb-2 text-gray-900">Muffins</h3>
@@ -156,7 +156,7 @@ export default function HomePage() {
 
             {/* Get Started Section */}
             <section aria-label="Get Started" className="max-w-screen-lg mx-auto px-4 mb-8 text-center">
-                <div className="bg-purple-100 rounded-3xl px-4 py-8 md:py-12">
+                <div className="bg-purple-100 rounded-2xl px-4 py-8 md:py-12">
                     <h2 className="text-4xl font-bold mb-4">
                         Ready to Start Baking?
                     </h2>
