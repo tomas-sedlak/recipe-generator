@@ -6,10 +6,10 @@ import Button from "../components/common/Button";
 import Preview from "../components/common/Preview";
 
 // Base Items with dynamic image paths
-const baseItems: string[] = ["Classic", "Cocoa", "Banana", "Blueberry", "Whole Wheat", "Pumpkin", "Carrot", "Lemon"];
+const baseItems: string[] = ["Classic", "Cocoa", "Banana", "Carrot", "Pumpkin"];
 
 // Mixin Items with dynamic image paths
-const mixinItems: string[] = ["Chocolate Chips", "Nuts", "Berries", "Cream Cheese", "Streusel", "Cinnamon", "Coconut", "Poppy Seeds"];
+const mixinItems: string[] = ["Chocolate Chunks", "Nuts", "Berries", "Cream Cheese", "Streusel", "Cinnamon", "Coconut", "Poppy Seeds"];
 
 const toppingItems: string[] = ["Streusel Crumb", "Sugar Glaze", "Cream Cheese Frosting", "Turbinado Sugar", "Oat Crumble"];
 
