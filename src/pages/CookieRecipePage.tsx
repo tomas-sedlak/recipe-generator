@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { CheckIcon, Clock8Icon, ClockIcon, DownloadIcon, LinkIcon, UtensilsIcon } from 'lucide-react';
 import { generateRecipePDF } from '../utils/generateRecipePDF';
+import { Helmet } from 'react-helmet-async';
 import Preview from '../components/common/Preview';
 import Button from '../components/common/Button';
 
@@ -380,182 +381,200 @@ export default function CookieRecipePage() {
 
     const nutritionData = calculateTotalNutrition(base, mixins);
 
+    const metaDescription = "Delicious cookie recipe. Complete with ingredients, instructions, and nutritional information.";
+
     return (
-        <div className="max-w-screen-lg mx-auto p-4 flex flex-col md:grid md:grid-cols-3 gap-6">
-            <div className="md:col-span-2">
-                <div className="mb-8">
-                    <h1 className="text-4xl font-bold mb-4">
-                        {recipeTitle}
-                    </h1>
+        <>
+            <Helmet>
+                <title>{recipeTitle} - Mix Your Treat</title>
+                <meta name="description" content={metaDescription} />
+                <meta property="og:title" content={`${recipeTitle} - Mix Your Treat`} />
+                <meta property="og:description" content={metaDescription} />
+                <meta property="og:type" content="article" />
+                <meta property="og:url" content={window.location.href} />
+                <meta name="twitter:card" content="summary" />
+                <meta name="twitter:title" content={`${recipeTitle} - Mix Your Treat`} />
+                <meta name="twitter:description" content={metaDescription} />
+                <link rel="canonical" href={window.location.href} />
+                <meta name="keywords" content={`cookie recipe, ${base.toLowerCase()} cookies, ${mixins.join(', ').toLowerCase()}, baking, dessert, homemade cookies`} />
+            </Helmet>
 
-                    <div className="mt-2 flex flex-wrap flex-col md:flex-row gap-x-4 gap-y-2 mb-6 text-gray-600">
-                        <div className="flex items-center gap-2">
-                            <ClockIcon className="w-5 h-5" />
-                            <p><span className="text-gray-900 font-semibold">Prep Time:</span> {COOKIE_PREP_TIME}</p>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <Clock8Icon className="w-5 h-5" />
-                            <p><span className="text-gray-900 font-semibold">Cook Time:</span> {COOKIE_COOK_TIME}</p>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <UtensilsIcon className="w-5 h-5" />
-                            <p><span className="text-gray-900 font-semibold">Yield:</span> {COOKIE_YIELD}</p>
-                        </div>
-                    </div>
+            <div className="max-w-screen-lg mx-auto p-4 flex flex-col md:grid md:grid-cols-3 gap-6">
+                <div className="md:col-span-2">
+                    <div className="mb-8">
+                        <h1 className="text-4xl font-bold mb-4">
+                            {recipeTitle}
+                        </h1>
 
-                    <div className="flex flex-col md:flex-row gap-2">
-                        <Button onClick={handleDownload} loading={isDownloading}>
-                            <DownloadIcon className="w-5 h-5" />
-                            Download PDF
-                        </Button>
+                        <div className="mt-2 flex flex-wrap flex-col md:flex-row gap-x-4 gap-y-2 mb-6 text-gray-600">
+                            <div className="flex items-center gap-2">
+                                <ClockIcon className="w-5 h-5" />
+                                <p><span className="text-gray-900 font-semibold">Prep Time:</span> {COOKIE_PREP_TIME}</p>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Clock8Icon className="w-5 h-5" />
+                                <p><span className="text-gray-900 font-semibold">Cook Time:</span> {COOKIE_COOK_TIME}</p>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <UtensilsIcon className="w-5 h-5" />
+                                <p><span className="text-gray-900 font-semibold">Yield:</span> {COOKIE_YIELD}</p>
+                            </div>
+                        </div>
 
-                        <div className="relative">
-                            <Button variant="secondary" onClick={handleShare} className="w-full">
-                                <LinkIcon className="w-5 h-5" />
-                                Copy Link
+                        <div className="flex flex-col md:flex-row gap-2">
+                            <Button onClick={handleDownload} loading={isDownloading}>
+                                <DownloadIcon className="w-5 h-5" />
+                                Download PDF
                             </Button>
-                            {showTooltip && (
-                                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-2 py-1 bg-gray-800 text-white text-sm rounded shadow-lg whitespace-nowrap">
-                                    <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-gray-800 rotate-45"></div>
-                                    Link copied!
-                                </div>
-                            )}
+
+                            <div className="relative">
+                                <Button variant="secondary" onClick={handleShare} className="w-full">
+                                    <LinkIcon className="w-5 h-5" />
+                                    Copy Link
+                                </Button>
+                                {showTooltip && (
+                                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-2 py-1 bg-gray-800 text-white text-sm rounded shadow-lg whitespace-nowrap">
+                                        <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-gray-800 rotate-45"></div>
+                                        Link copied!
+                                    </div>
+                                )}
+                            </div>
                         </div>
                     </div>
+
+                    <div className="md:hidden mb-6">
+                        <Preview folder="cookies" items={[base, ...mixins]} />
+                    </div>
+
+                    <section className="mb-8">
+                        <h2 className="text-2xl font-bold mb-4">Ingredients</h2>
+                        <ul className="list-none space-y-2">
+                            {baseRecipe.ingredients.map((ingredient, index) => (
+                                <li key={`base-${index}`} className="flex items-center gap-2">
+                                    <button
+                                        onClick={() => toggleIngredient(ingredient)}
+                                        className={`w-5 h-5 rounded border flex-shrink-0 flex items-center justify-center
+                                        ${checkedIngredients.has(ingredient)
+                                                ? 'bg-purple-500 border-purple-500 text-white'
+                                                : 'border-gray-300'}`}
+                                    >
+                                        {checkedIngredients.has(ingredient) && <CheckIcon className="w-4 h-4" />}
+                                    </button>
+                                    <span
+                                        className={`${checkedIngredients.has(ingredient) && 'line-through text-gray-500'} cursor-pointer`}
+                                        onClick={() => toggleIngredient(ingredient)}
+                                    >
+                                        {ingredient}
+                                    </span>
+                                </li>
+                            ))}
+                            {mixinIngredients.map((ingredient, index) => (
+                                <li key={`mixin-${index}`} className="flex items-center gap-2">
+                                    <button
+                                        onClick={() => toggleIngredient(ingredient)}
+                                        className={`w-5 h-5 rounded border flex-shrink-0 flex items-center justify-center
+                                        ${checkedIngredients.has(ingredient)
+                                                ? 'bg-purple-500 border-purple-500 text-white'
+                                                : 'border-gray-300'}`}
+                                    >
+                                        {checkedIngredients.has(ingredient) && <CheckIcon className="w-4 h-4" />}
+                                    </button>
+                                    <span
+                                        className={`${checkedIngredients.has(ingredient) && 'line-through text-gray-500'} cursor-pointer`}
+                                        onClick={() => toggleIngredient(ingredient)}
+                                    >
+                                        {ingredient}
+                                    </span>
+                                </li>
+                            ))}
+                        </ul>
+                    </section>
+
+                    <section className="mb-8">
+                        <h2 className="text-2xl font-bold mb-4">Instructions</h2>
+                        <ol className="list-none space-y-4">
+                            {baseRecipe.instructions.map((instruction, index) => (
+                                <li key={index} className="flex items-start gap-2">
+                                    <div className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-500 text-white flex items-center justify-center text-sm font-semibold">
+                                        {index + 1}
+                                    </div>
+                                    <span>{instruction}</span>
+                                </li>
+                            ))}
+                            {mixins.length > 0 && (
+                                <li className="flex items-start gap-2">
+                                    <div className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-500 text-white flex items-center justify-center text-sm font-semibold">
+                                        {baseRecipe.instructions.length + 1}
+                                    </div>
+                                    <span>
+                                        Fold in {mixins.length > 1
+                                            ? mixins.slice(0, -1).join(', ') + ' and ' + mixins.slice(-1)
+                                            : mixins[0]} until evenly distributed
+                                    </span>
+                                </li>
+                            )}
+                        </ol>
+                    </section>
+
+                    <section className="mb-8">
+                        <h2 className="text-2xl font-bold mb-4">Recipe Notes</h2>
+                        <ul className="list-disc list-outside pl-4 space-y-2">
+                            {recipeNotes[base]?.map((note, index) => (
+                                <li key={index}>{note}</li>
+                            ))}
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h2 className="text-2xl font-bold mb-4">Nutrition Per 100g</h2>
+                        <table className="sm:max-w-[320px] w-full border rounded-lg">
+                            <tbody>
+                                <tr className="border-b even:bg-gray-100 odd:bg-white">
+                                    <td className="font-medium py-1 px-2">Calories:</td>
+                                    <td className="text-right px-2 py-1">{nutritionData.calories} kcal</td>
+                                </tr>
+                                <tr className="border-b even:bg-gray-100 odd:bg-white">
+                                    <td className="font-medium py-1 px-2">Total Fat:</td>
+                                    <td className="text-right px-2 py-1">{nutritionData.fat}g</td>
+                                </tr>
+                                <tr className="border-b even:bg-gray-100 odd:bg-white">
+                                    <td className="font-medium py-1 px-2">Saturated Fat:</td>
+                                    <td className="text-right px-2 py-1">{nutritionData.saturatedFat}g</td>
+                                </tr>
+                                <tr className="border-b even:bg-gray-100 odd:bg-white">
+                                    <td className="font-medium py-1 px-2">Cholesterol:</td>
+                                    <td className="text-right px-2 py-1">{nutritionData.cholesterol}mg</td>
+                                </tr>
+                                <tr className="border-b even:bg-gray-100 odd:bg-white">
+                                    <td className="font-medium py-1 px-2">Sodium:</td>
+                                    <td className="text-right px-2 py-1">{nutritionData.sodium}mg</td>
+                                </tr>
+                                <tr className="border-b even:bg-gray-100 odd:bg-white">
+                                    <td className="font-medium py-1 px-2">Total Carbohydrates:</td>
+                                    <td className="text-right px-2 py-1">{nutritionData.carbohydrates}g</td>
+                                </tr>
+                                <tr className="border-b even:bg-gray-100 odd:bg-white">
+                                    <td className="font-medium py-1 px-2">Dietary Fiber:</td>
+                                    <td className="text-right px-2 py-1">{nutritionData.fiber}g</td>
+                                </tr>
+                                <tr className="border-b even:bg-gray-100 odd:bg-white">
+                                    <td className="font-medium py-1 px-2">Sugars:</td>
+                                    <td className="text-right px-2 py-1">{nutritionData.sugar}g</td>
+                                </tr>
+                                <tr className="border-b even:bg-gray-100 odd:bg-white">
+                                    <td className="font-medium py-1 px-2">Protein:</td>
+                                    <td className="text-right px-2 py-1">{nutritionData.protein}g</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p className="text-gray-500 text-sm mt-2">Nutrition information is automatically calculated, so should only be used as an approximation.</p>
+                    </section>
                 </div>
 
-                <div className="md:hidden mb-6">
+                <div className="hidden md:block md:col-span-1 sticky top-20 h-fit">
                     <Preview folder="cookies" items={[base, ...mixins]} />
                 </div>
-
-                <section className="mb-8">
-                    <h2 className="text-2xl font-bold mb-4">Ingredients</h2>
-                    <ul className="list-none space-y-2">
-                        {baseRecipe.ingredients.map((ingredient, index) => (
-                            <li key={`base-${index}`} className="flex items-center gap-2">
-                                <button
-                                    onClick={() => toggleIngredient(ingredient)}
-                                    className={`w-5 h-5 rounded border flex-shrink-0 flex items-center justify-center
-                                        ${checkedIngredients.has(ingredient)
-                                            ? 'bg-purple-500 border-purple-500 text-white'
-                                            : 'border-gray-300'}`}
-                                >
-                                    {checkedIngredients.has(ingredient) && <CheckIcon className="w-4 h-4" />}
-                                </button>
-                                <span
-                                    className={`${checkedIngredients.has(ingredient) && 'line-through text-gray-500'} cursor-pointer`}
-                                    onClick={() => toggleIngredient(ingredient)}
-                                >
-                                    {ingredient}
-                                </span>
-                            </li>
-                        ))}
-                        {mixinIngredients.map((ingredient, index) => (
-                            <li key={`mixin-${index}`} className="flex items-center gap-2">
-                                <button
-                                    onClick={() => toggleIngredient(ingredient)}
-                                    className={`w-5 h-5 rounded border flex-shrink-0 flex items-center justify-center
-                                        ${checkedIngredients.has(ingredient)
-                                            ? 'bg-purple-500 border-purple-500 text-white'
-                                            : 'border-gray-300'}`}
-                                >
-                                    {checkedIngredients.has(ingredient) && <CheckIcon className="w-4 h-4" />}
-                                </button>
-                                <span
-                                    className={`${checkedIngredients.has(ingredient) && 'line-through text-gray-500'} cursor-pointer`}
-                                    onClick={() => toggleIngredient(ingredient)}
-                                >
-                                    {ingredient}
-                                </span>
-                            </li>
-                        ))}
-                    </ul>
-                </section>
-
-                <section className="mb-8">
-                    <h2 className="text-2xl font-bold mb-4">Instructions</h2>
-                    <ol className="list-none space-y-4">
-                        {baseRecipe.instructions.map((instruction, index) => (
-                            <li key={index} className="flex items-start gap-2">
-                                <div className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-500 text-white flex items-center justify-center text-sm font-semibold">
-                                    {index + 1}
-                                </div>
-                                <span>{instruction}</span>
-                            </li>
-                        ))}
-                        {mixins.length > 0 && (
-                            <li className="flex items-start gap-2">
-                                <div className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-500 text-white flex items-center justify-center text-sm font-semibold">
-                                    {baseRecipe.instructions.length + 1}
-                                </div>
-                                <span>
-                                    Fold in {mixins.length > 1
-                                        ? mixins.slice(0, -1).join(', ') + ' and ' + mixins.slice(-1)
-                                        : mixins[0]} until evenly distributed
-                                </span>
-                            </li>
-                        )}
-                    </ol>
-                </section>
-
-                <section className="mb-8">
-                    <h2 className="text-2xl font-bold mb-4">Recipe Notes</h2>
-                    <ul className="list-disc list-outside pl-4 space-y-2">
-                        {recipeNotes[base]?.map((note, index) => (
-                            <li key={index}>{note}</li>
-                        ))}
-                    </ul>
-                </section>
-
-                <section>
-                    <h2 className="text-2xl font-bold mb-4">Nutrition Per 100g</h2>
-                    <table className="sm:max-w-[320px] w-full border rounded-lg">
-                        <tbody>
-                            <tr className="border-b even:bg-gray-100 odd:bg-white">
-                                <td className="font-medium py-1 px-2">Calories:</td>
-                                <td className="text-right px-2 py-1">{nutritionData.calories} kcal</td>
-                            </tr>
-                            <tr className="border-b even:bg-gray-100 odd:bg-white">
-                                <td className="font-medium py-1 px-2">Total Fat:</td>
-                                <td className="text-right px-2 py-1">{nutritionData.fat}g</td>
-                            </tr>
-                            <tr className="border-b even:bg-gray-100 odd:bg-white">
-                                <td className="font-medium py-1 px-2">Saturated Fat:</td>
-                                <td className="text-right px-2 py-1">{nutritionData.saturatedFat}g</td>
-                            </tr>
-                            <tr className="border-b even:bg-gray-100 odd:bg-white">
-                                <td className="font-medium py-1 px-2">Cholesterol:</td>
-                                <td className="text-right px-2 py-1">{nutritionData.cholesterol}mg</td>
-                            </tr>
-                            <tr className="border-b even:bg-gray-100 odd:bg-white">
-                                <td className="font-medium py-1 px-2">Sodium:</td>
-                                <td className="text-right px-2 py-1">{nutritionData.sodium}mg</td>
-                            </tr>
-                            <tr className="border-b even:bg-gray-100 odd:bg-white">
-                                <td className="font-medium py-1 px-2">Total Carbohydrates:</td>
-                                <td className="text-right px-2 py-1">{nutritionData.carbohydrates}g</td>
-                            </tr>
-                            <tr className="border-b even:bg-gray-100 odd:bg-white">
-                                <td className="font-medium py-1 px-2">Dietary Fiber:</td>
-                                <td className="text-right px-2 py-1">{nutritionData.fiber}g</td>
-                            </tr>
-                            <tr className="border-b even:bg-gray-100 odd:bg-white">
-                                <td className="font-medium py-1 px-2">Sugars:</td>
-                                <td className="text-right px-2 py-1">{nutritionData.sugar}g</td>
-                            </tr>
-                            <tr className="border-b even:bg-gray-100 odd:bg-white">
-                                <td className="font-medium py-1 px-2">Protein:</td>
-                                <td className="text-right px-2 py-1">{nutritionData.protein}g</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <p className="text-gray-500 text-sm mt-2">Nutrition information is automatically calculated, so should only be used as an approximation.</p>
-                </section>
             </div>
-
-            <div className="hidden md:block md:col-span-1 sticky top-20 h-fit">
-                <Preview folder="cookies" items={[base, ...mixins]} />
-            </div>
-        </div>
+        </>
     );
 }
