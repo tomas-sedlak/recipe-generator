@@ -69,7 +69,7 @@ export default function GenerateCookiesPage() {
 
   if (isGenerating) {
     return (
-      <div className="fixed inset-0 bg-white flex items-center justify-center">
+      <div className="max-w-screen-lg mx-auto px-4 my-8 flex-grow flex items-center justify-center">
         <div className="text-center">
           <div className="mb-8">
             <img

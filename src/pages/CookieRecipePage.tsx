@@ -401,7 +401,7 @@ export default function CookieRecipePage() {
                 <meta name="keywords" content={`cookie recipe, ${base.toLowerCase()} cookies, ${mixins.join(', ').toLowerCase()}, baking, dessert, homemade cookies`} />
             </Helmet>
 
-            <div className="max-w-screen-lg mx-auto p-4 flex flex-col md:grid md:grid-cols-3 gap-6">
+            <div className="max-w-screen-lg w-full mx-auto p-4 flex flex-col md:grid md:grid-cols-3 gap-6">
                 <div className="md:col-span-2">
                     <div className="mb-8">
                         <h1 className="text-4xl font-bold mb-4">

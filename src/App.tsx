@@ -9,6 +9,7 @@ import GenerateCookiesPage from './pages/GenerateCookiesPage';
 import CookieRecipePage from './pages/CookieRecipePage';
 import GenerateMuffinsPage from './pages/GenerateMuffinsPage';
 import MuffinsRecipePage from './pages/MuffinsRecipePage';
+import NotFoundPage from './pages/NotFoundPage';
 
 const App = () => {
   return (
@@ -18,7 +19,7 @@ const App = () => {
       <div className="min-h-screen flex flex-col">
         <Header />
         
-        <main className="flex-grow">
+        <main className="flex-grow flex flex-col">
           <Routes>
             <Route path="/" element={<HomePage />} />
             
@@ -29,6 +30,9 @@ const App = () => {
             {/* Muffins */}
             <Route path="/muffins/generate" element={<GenerateMuffinsPage />} />
             <Route path="/muffins" element={<MuffinsRecipePage />} />
+
+            {/* 404 */}
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>
 
