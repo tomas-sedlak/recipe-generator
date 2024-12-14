@@ -343,6 +343,8 @@ export default function CookieRecipePage() {
     const [isDownloading, setIsDownloading] = useState(false);
 
     const handleDownload = async () => {
+        if (isDownloading) return;
+        
         setIsDownloading(true);
         const instructions = [...baseRecipe.instructions];
         if (mixins.length > 0) {
