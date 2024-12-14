@@ -92,7 +92,7 @@ export default function GenerateCookiesPage() {
           name="description"
           content="Create your own custom cookie recipe with our interactive recipe generator. Choose from classic, chocolate, oatmeal, and more bases, then add your favorite mix-ins."
         />
-        <meta property="og:title" content="Create Custom Cookie Recipe | Cookie Recipe Generator" />
+        <meta property="og:title" content="Create Custom Cookie Recipe - Mix Your Treat" />
         <meta
           property="og:description"
           content="Create your own custom cookie recipe with our interactive recipe generator. Choose from classic, chocolate, oatmeal, and more bases, then add your favorite mix-ins."
@@ -100,7 +100,7 @@ export default function GenerateCookiesPage() {
         <meta property="og:type" content="website" />
         <meta property="og:url" content={window.location.href} />
         <meta name="twitter:card" content="summary" />
-        <meta name="twitter:title" content="Create Custom Cookie Recipe | Cookie Recipe Generator" />
+        <meta name="twitter:title" content="Create Custom Cookie Recipe - Mix Your Treat" />
         <meta
           name="twitter:description"
           content="Create your own custom cookie recipe with our interactive recipe generator. Choose from classic, chocolate, oatmeal, and more bases, then add your favorite mix-ins."
