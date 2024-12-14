@@ -8,7 +8,7 @@ import Preview from "../components/common/Preview";
 const baseItems: string[] = ["Classic", "Cocoa", "Oat", "Peanut Butter", "Red Velvet"]
 
 // Mixin Items with dynamic image paths
-const mixinItems: string[] = ["Chocolate Chips", "Nuts", "Raisins", "Candy", "Mini Marshmallows"]
+const mixinItems: string[] = ["Chocolate Chips", "Nuts", "Raisins", "Candy", "Dried Fruits", "Mini Marshmallows", "Sprinkles"]
 
 export default function HomePage() {
     const [cookiePreview, setCookiePreview] = useState<string[]>([]);
@@ -52,7 +52,7 @@ export default function HomePage() {
                     >
                         <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
                             <img
-                                src="/images/cookies/cookies.jpg"
+                                src="/images/cookies/cookies.png"
                                 alt="Cookie Generator"
                                 className="relative aspect-square w-full md:w-[40%] rounded-xl object-cover"
                             />
@@ -73,7 +73,7 @@ export default function HomePage() {
                     >
                         <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
                             <img
-                                src="/images/muffins/muffins.jpg"
+                                src="/images/muffins/muffins.png"
                                 alt="Muffin Generator"
                                 className="relative aspect-square w-full md:w-[40%] rounded-xl object-cover"
                             />

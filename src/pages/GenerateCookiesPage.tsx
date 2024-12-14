@@ -10,7 +10,7 @@ import Preview from "../components/common/Preview";
 const baseItems: string[] = ["Classic", "Cocoa", "Oat", "Peanut Butter", "Red Velvet"]
 
 // Mixin Items with dynamic image paths
-const mixinItems: string[] = ["Chocolate Chips", "Nuts", "Raisins", "Dried Fruits", "Candy", "Mini Marshmallows"]
+const mixinItems: string[] = ["Chocolate Chips", "Nuts", "Raisins", "Dried Fruits", "Candy", "Mini Marshmallows", "Sprinkles"]
 
 export default function GenerateCookiesPage() {
   const [base, setBase] = useState<string>(baseItems[0]);
