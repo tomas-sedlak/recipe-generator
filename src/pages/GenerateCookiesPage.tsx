@@ -15,6 +15,7 @@ const mixinItems: string[] = ["Chocolate Chips", "Nuts", "Raisins", "Dried Fruit
 export default function GenerateCookiesPage() {
   const [base, setBase] = useState<string>(baseItems[0]);
   const [mixins, setMixins] = useState<string[]>([]);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const navigate = useNavigate();
 
@@ -51,8 +52,12 @@ export default function GenerateCookiesPage() {
     setMixins(shuffledMixins);
   };
 
-
-  const handleGenerateRecipe = () => {
+  const handleGenerateRecipe = async () => {
+    setIsGenerating(true);
+    
+    // Show loading state for random seconds
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 1000 + 1000));
+    
     const searchParams = new URLSearchParams({
       base: base,
       mixins: mixins.join(','),
@@ -60,6 +65,23 @@ export default function GenerateCookiesPage() {
 
     navigate(`/cookies?${searchParams.toString()}`);
   };
+
+  if (isGenerating) {
+    return (
+      <div className="fixed inset-0 bg-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="mb-8">
+            <img
+              src={`/images/cookies/${snakeCase(base)}_preview.png`}
+              alt="Cookie"
+              className="w-32 h-32 mx-auto animate-bounce"
+            />
+          </div>
+          <p className="text-lg font-medium">Preparing Your Recipe...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-screen-lg mx-auto px-4 py-8">
