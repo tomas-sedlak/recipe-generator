@@ -112,7 +112,7 @@ export default function GenerateCookiesPage() {
         />
       </Helmet>
 
-      <div className="max-w-screen-lg mx-auto px-4 py-8">
+      <div className="max-w-screen-lg w-full mx-auto px-4 py-8">
         <div className="mb-8">
           <h1 className="text-4xl font-bold mb-1">
             Create Your Custom <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Cookie</span> Recipe
