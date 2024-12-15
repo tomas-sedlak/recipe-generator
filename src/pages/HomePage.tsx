@@ -32,7 +32,7 @@ export default function HomePage() {
 
     return (
         <>
-            <section className="max-w-screen-lg mx-auto px-4 my-8 md:my-16 grid md:grid-cols-3 gap-8 items-center">
+            <section className="max-w-screen-lg w-full mx-auto px-4 my-8 md:my-16 grid md:grid-cols-3 gap-8 items-center">
                 <div className="animate-fade-in-down col-span-2">
                     <h1 className="mb-4 text-5xl font-bold tracking-tight leading-none text-gray-900 lg:text-6xl">
                         Create <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Custom</span><br />Baking Recipes                        </h1>
@@ -44,7 +44,7 @@ export default function HomePage() {
             </section>
 
             {/* Recipe Cards */}
-            <section id="recipe-types" aria-label="Recipe Types" className="max-w-screen-lg mx-auto px-4 mb-8 md:mb-16">
+            <section id="recipe-types" aria-label="Recipe Types" className="max-w-screen-lg w-full mx-auto px-4 mb-8 md:mb-16">
                 <div className="grid md:grid-cols-2 gap-x-6 gap-y-4">
                     <Link
                         to="/cookies/generate"
@@ -92,7 +92,7 @@ export default function HomePage() {
 
             {/* How It Works Section */}
             <section aria-label="How It Works" className="bg-gray-100 py-12 mb-8 md:mb-16">
-                <div className="max-w-screen-lg mx-auto text-center px-4">
+                <div className="max-w-screen-lg w-full mx-auto text-center px-4">
                     <h2 className="text-3xl font-bold mb-8 text-center">
                         How It Works
                     </h2>
@@ -135,7 +135,7 @@ export default function HomePage() {
             </section>
 
             {/* Features Section */}
-            <section aria-label="Features" className="max-w-screen-lg mx-auto px-4 mb-8 md:mb-16 text-center">
+            <section aria-label="Features" className="max-w-screen-lg w-full mx-auto px-4 mb-8 md:mb-16 text-center">
                 <h2 className="text-3xl font-bold mb-12">
                     Why Use Our Recipe Generator?
                 </h2>
@@ -155,7 +155,7 @@ export default function HomePage() {
             </section>
 
             {/* Get Started Section */}
-            <section aria-label="Get Started" className="max-w-screen-lg mx-auto px-4 mb-8 text-center">
+            <section aria-label="Get Started" className="max-w-screen-lg w-full mx-auto px-4 mb-8 text-center">
                 <div className="bg-purple-100 rounded-2xl px-4 py-8 md:py-12">
                     <h2 className="text-4xl font-bold mb-4">
                         Ready to Start Baking?
