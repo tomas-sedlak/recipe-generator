@@ -10,7 +10,7 @@ const COOKIE_COOK_TIME = "10-12 minutes";
 const COOKIE_YIELD = "24 cookies";
 
 // Add recipe data
-const baseRecipes = {
+const baseRecipes: { [key: string]: { ingredients: string[], instructions: string[] } } = {
     "Classic": {
         ingredients: [
             "2¼ cups all-purpose flour",
@@ -126,58 +126,58 @@ const baseRecipes = {
 
 const baseNutrition: { [key: string]: NutritionData } = {
     "Classic": {
-        calories: 483,
-        fat: 23,
-        saturatedFat: 13,
-        cholesterol: 81,
-        sodium: 355,
-        carbohydrates: 65,
-        fiber: 3,
-        sugar: 39,
+        calories: 470,
+        fat: 22,
+        saturatedFat: 12,
+        cholesterol: 62,
+        sodium: 310,
+        carbohydrates: 64,
+        fiber: 2,
+        sugar: 35,
         protein: 6
     },
     "Cocoa": {
-        calories: 516,
-        fat: 26,
-        saturatedFat: 16,
-        cholesterol: 81,
-        sodium: 371,
-        carbohydrates: 71,
-        fiber: 6,
-        sugar: 42,
-        protein: 10
+        calories: 466,
+        fat: 21,
+        saturatedFat: 12,
+        cholesterol: 62,
+        sodium: 320,
+        carbohydrates: 65,
+        fiber: 4,
+        sugar: 37,
+        protein: 7
     },
     "Oat": {
-        calories: 548,
-        fat: 23,
-        saturatedFat: 13,
-        cholesterol: 81,
-        sodium: 339,
-        carbohydrates: 81,
-        fiber: 6,
-        sugar: 35,
-        protein: 10
+        calories: 450,
+        fat: 19,
+        saturatedFat: 10,
+        cholesterol: 62,
+        sodium: 300,
+        carbohydrates: 66,
+        fiber: 5,
+        sugar: 32,
+        protein: 8
     },
     "Peanut Butter": {
-        calories: 581,
-        fat: 35,
-        saturatedFat: 16,
-        cholesterol: 81,
-        sodium: 403,
-        carbohydrates: 61,
+        calories: 490,
+        fat: 27,
+        saturatedFat: 12,
+        cholesterol: 62,
+        sodium: 340,
+        carbohydrates: 57,
         fiber: 3,
-        sugar: 42,
-        protein: 16
+        sugar: 33,
+        protein: 11
     },
     "Red Velvet": {
-        calories: 532,
-        fat: 26,
-        saturatedFat: 16,
-        cholesterol: 97,
-        sodium: 387,
-        carbohydrates: 74,
-        fiber: 3,
-        sugar: 45,
+        calories: 465,
+        fat: 22,
+        saturatedFat: 12,
+        cholesterol: 65,
+        sodium: 330,
+        carbohydrates: 63,
+        fiber: 2,
+        sugar: 38,
         protein: 6
     }
 };
@@ -187,7 +187,7 @@ const mixinNutrition: { [key: string]: NutritionData } = {
         calories: 545,
         fat: 31,
         saturatedFat: 19,
-        cholesterol: 0,
+        cholesterol: 3,
         sodium: 24,
         carbohydrates: 63,
         fiber: 4,
@@ -195,14 +195,14 @@ const mixinNutrition: { [key: string]: NutritionData } = {
         protein: 6
     },
     "white chocolate": {
-        calories: 549,
+        calories: 550,
         fat: 32,
         saturatedFat: 20,
         cholesterol: 21,
         sodium: 90,
         carbohydrates: 59,
         fiber: 0,
-        sugar: 59,
+        sugar: 58,
         protein: 6
     },
     "nuts": {
@@ -217,7 +217,7 @@ const mixinNutrition: { [key: string]: NutritionData } = {
         protein: 21
     },
     "m&ms": {
-        calories: 479,
+        calories: 485,
         fat: 20,
         saturatedFat: 12,
         cholesterol: 5,
@@ -229,48 +229,15 @@ const mixinNutrition: { [key: string]: NutritionData } = {
     },
     "sprinkles": {
         calories: 389,
-        fat: 0,
-        saturatedFat: 0,
+        fat: 3,
+        saturatedFat: 2,
         cholesterol: 0,
         sodium: 37,
-        carbohydrates: 96,
+        carbohydrates: 89,
         fiber: 0,
-        sugar: 93,
+        sugar: 85,
         protein: 0
     }
-};
-
-// Add this function to calculate combined nutrition values
-const calculateTotalNutrition = (base: string, mixins: string[]) => {
-    const baseNutritionValues = baseNutrition[base] || baseNutrition["Classic"];
-
-    if (mixins.length === 0) return baseNutritionValues;
-
-    // Calculate the proportion for base and mixins
-    const baseRatio = 0.8; // Base is 80% of the recipe
-    const mixinRatio = 0.2 / mixins.length; // Remaining 20% split between mixins
-
-    // Start with base values multiplied by ratio
-    const totalNutrition = Object.entries(baseNutritionValues).reduce((acc, [key, value]) => {
-        acc[key] = value * baseRatio;
-        return acc;
-    }, {});
-
-    // Add mixin values
-    mixins.forEach(mixin => {
-        if (mixinNutrition[mixin]) {
-            Object.entries(mixinNutrition[mixin]).forEach(([key, value]) => {
-                totalNutrition[key] += value * mixinRatio;
-            });
-        }
-    });
-
-    // Round all values
-    Object.keys(totalNutrition).forEach(key => {
-        totalNutrition[key] = Math.round(totalNutrition[key]);
-    });
-
-    return totalNutrition;
 };
 
 // Add recipe notes after baseRecipes
@@ -301,6 +268,40 @@ const recipeNotes: { [key: string]: string[] } = {
         "Add white chocolate chips for classic flavor"
     ]
 };
+
+function calculateTotalNutrition(base: string, mixins: string[]): NutritionData {
+    // Get base nutrition
+    const baseNutritionValues = baseNutrition[base] || baseNutrition["Classic"];
+    
+    // If no mixins, return base nutrition
+    if (!mixins.length) return baseNutritionValues;
+
+    // Calculate mixin portion (1.5 cups total divided by number of mixins)
+    const mixinPortion = 1.5 / mixins.length;
+
+    // Start with base nutrition values
+    const totalNutrition = { ...baseNutritionValues };
+
+    // Add nutrition from each mixin
+    mixins.forEach(mixin => {
+        if (mixinNutrition[mixin]) {
+            const mixinValues = mixinNutrition[mixin];
+            // Add proportional nutrition values from each mixin
+            Object.keys(mixinValues).forEach(key => {
+                totalNutrition[key as keyof NutritionData] += 
+                    Math.round((mixinValues[key as keyof NutritionData] * mixinPortion));
+            });
+        }
+    });
+
+    // Round all values to nearest integer
+    Object.keys(totalNutrition).forEach(key => {
+        totalNutrition[key as keyof NutritionData] = 
+            Math.round(totalNutrition[key as keyof NutritionData]);
+    });
+
+    return totalNutrition;
+}
 
 export default function CookieRecipePage() {
     const searchParams = new URLSearchParams(window.location.search);
