@@ -3,6 +3,8 @@ interface RecipeData {
     prepTime: string;
     cookTime: string;
     recipeYield: string;
+    previewFolder: string;
+    previewItems: string[];
     ingredients: string[];
     instructions: string[];
     notes?: string[];

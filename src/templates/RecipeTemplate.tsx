@@ -12,9 +12,9 @@ import Preview from '../components/common/Preview';
 import Button from '../components/common/Button';
 
 // Types
-import RecipeData from '../types/Recipe';
+import RecipeData from '../types/RecipeTypes';
 
-export default function RecipeTemplate(recipe: RecipeData) {
+export default function RecipeTemplate({ recipe }: { recipe: RecipeData }) {
     const [showTooltip, setShowTooltip] = useState(false);
 
     // Add state for checked ingredients
@@ -99,7 +99,7 @@ export default function RecipeTemplate(recipe: RecipeData) {
                 </div>
 
                 <div className="md:hidden mb-6">
-                    <Preview folder="cookies" items={recipe.ingredients} />
+                    <Preview folder={recipe.previewFolder} items={recipe.previewItems} />
                 </div>
 
                 <section className="mb-8">
@@ -199,7 +199,7 @@ export default function RecipeTemplate(recipe: RecipeData) {
             </div>
 
             <div className="hidden md:block md:col-span-1 sticky top-20 h-fit">
-                <Preview folder="cookies" items={recipe.ingredients} />
+                <Preview folder={recipe.previewFolder} items={recipe.previewItems} />
             </div>
         </div>
     );

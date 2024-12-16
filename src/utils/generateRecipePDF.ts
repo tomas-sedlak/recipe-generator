@@ -1,6 +1,6 @@
 import jsPDF from 'jspdf';
 import { snakeCase } from 'lodash';
-import RecipeData from '../types/Recipe';
+import RecipeData from '../types/RecipeTypes';
 
 const loadImage = async (url: string): Promise<HTMLImageElement> => {
     return new Promise((resolve, reject) => {
@@ -75,7 +75,7 @@ export const generateRecipePDF = async (recipe: RecipeData) => {
     const imageY = margin;
 
     try {
-        await addStackedImages(doc, 'cookies', recipe.ingredients, imageX, imageY, imageSize);
+        await addStackedImages(doc, recipe.previewFolder, recipe.previewItems, imageX, imageY, imageSize);
         yPosition = Math.max(yPosition, imageY + imageSize + lineHeight);
     } catch (error) {
         console.error('Failed to add cookie preview:', error);
