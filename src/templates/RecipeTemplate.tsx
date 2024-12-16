@@ -2,12 +2,13 @@
 import { useState } from 'react';
 
 // Icons
-import { CheckIcon, Clock8Icon, ClockIcon, DownloadIcon, LinkIcon, UtensilsIcon } from 'lucide-react';
+import { CheckIcon, Clock8Icon, ClockIcon, DownloadIcon, LinkIcon, UtensilsIcon, AlertCircleIcon } from 'lucide-react';
 
 // Utils
 import { generateRecipePDF } from '../utils/generateRecipePDF';
 
 // Components
+import { Link } from 'react-router-dom';
 import Preview from '../components/common/Preview';
 import Button from '../components/common/Button';
 
@@ -16,6 +17,7 @@ import RecipeData from '../types/RecipeTypes';
 
 export default function RecipeTemplate({ recipe }: { recipe: RecipeData }) {
     const [showTooltip, setShowTooltip] = useState(false);
+    const [showReportModal, setShowReportModal] = useState(false);
 
     // Add state for checked ingredients
     const [checkedIngredients, setCheckedIngredients] = useState<Set<string>>(new Set());
@@ -152,7 +154,7 @@ export default function RecipeTemplate({ recipe }: { recipe: RecipeData }) {
                     </section>
                 )}
 
-                <section>
+                <section className="mb-12">
                     <h2 className="text-2xl font-bold mb-4">Nutrition Per 100g</h2>
                     <table className="sm:max-w-[320px] w-full border rounded-lg">
                         <tbody>
@@ -196,11 +198,46 @@ export default function RecipeTemplate({ recipe }: { recipe: RecipeData }) {
                     </table>
                     <p className="text-gray-500 text-sm mt-2">Nutrition information is automatically calculated, so should only be used as an approximation.</p>
                 </section>
+
+                <section className="mb-8">
+                    <div className="flex justify-center">
+                        <Button variant="secondary" onClick={() => setShowReportModal(true)}>
+                            <AlertCircleIcon className="w-5 h-5" />
+                            Report a Mistake
+                        </Button>
+                    </div>
+                </section>
             </div>
 
             <div className="hidden md:block md:col-span-1 sticky top-20 h-fit">
                 <Preview folder={recipe.previewFolder} items={recipe.previewItems} />
             </div>
+
+            {showReportModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+                    <div className="bg-white rounded-2xl px-6 py-4 max-w-md w-full">
+                        <h2 className="text-2xl font-bold mb-4">Report a Mistake</h2>
+                        <p className="mb-4">
+                            Thank you for helping improve our recipes. Please send any corrections to:
+                        </p>
+                        <Link 
+                            to="mailto:mixyourtreat@gmail.com"
+                            target="_blank"
+                            className="text-purple-500 hover:text-purple-600 underline"
+                        >
+                            mixyourtreat@gmail.com
+                        </Link>
+                        <div className="mt-6 flex justify-end">
+                            <Button 
+                                variant="secondary" 
+                                onClick={() => setShowReportModal(false)}
+                            >
+                                Close
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

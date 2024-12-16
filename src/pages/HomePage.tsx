@@ -156,7 +156,7 @@ export default function HomePage() {
 
             {/* Get Started Section */}
             <section aria-label="Get Started" className="max-w-screen-lg w-full mx-auto px-4 mb-8 text-center">
-                <div className="bg-purple-100 rounded-2xl px-4 py-8 md:py-12">
+                <div className="bg-purple-100 rounded-2xl px-6 py-8 md:py-12">
                     <h2 className="text-4xl font-bold mb-4">
                         Ready to Start Baking?
                     </h2>
