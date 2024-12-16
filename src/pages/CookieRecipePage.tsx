@@ -1,17 +1,16 @@
-import { useState } from 'react';
-import { CheckIcon, Clock8Icon, ClockIcon, DownloadIcon, LinkIcon, UtensilsIcon } from 'lucide-react';
-import { generateRecipePDF } from '../utils/generateRecipePDF';
+// Components
 import { Helmet } from 'react-helmet-async';
-import Preview from '../components/common/Preview';
-import Button from '../components/common/Button';
+import RecipeTemplate from '../templates/RecipeTemplate';
 
-// Add these constants at the top with baseRecipes
+// Types
+import RecipeData, { NutritionData } from '../types/RecipeTypes';
+
 const COOKIE_PREP_TIME = "15 minutes";
 const COOKIE_COOK_TIME = "10-12 minutes";
 const COOKIE_YIELD = "24 cookies";
 
 // Add recipe data
-const baseRecipes = {
+const baseRecipes: { [key: string]: { ingredients: string[], instructions: string[] } } = {
     "Classic": {
         ingredients: [
             "2¼ cups all-purpose flour",
@@ -125,70 +124,70 @@ const baseRecipes = {
     }
 };
 
-const baseNutrition = {
+const baseNutrition: { [key: string]: NutritionData } = {
     "Classic": {
-        calories: 483,
-        fat: 23,
-        saturatedFat: 13,
-        cholesterol: 81,
-        sodium: 355,
-        carbohydrates: 65,
-        fiber: 3,
-        sugar: 39,
+        calories: 470,
+        fat: 22,
+        saturatedFat: 12,
+        cholesterol: 62,
+        sodium: 310,
+        carbohydrates: 64,
+        fiber: 2,
+        sugar: 35,
         protein: 6
     },
     "Cocoa": {
-        calories: 516,
-        fat: 26,
-        saturatedFat: 16,
-        cholesterol: 81,
-        sodium: 371,
-        carbohydrates: 71,
-        fiber: 6,
-        sugar: 42,
-        protein: 10
+        calories: 466,
+        fat: 21,
+        saturatedFat: 12,
+        cholesterol: 62,
+        sodium: 320,
+        carbohydrates: 65,
+        fiber: 4,
+        sugar: 37,
+        protein: 7
     },
     "Oat": {
-        calories: 548,
-        fat: 23,
-        saturatedFat: 13,
-        cholesterol: 81,
-        sodium: 339,
-        carbohydrates: 81,
-        fiber: 6,
-        sugar: 35,
-        protein: 10
+        calories: 450,
+        fat: 19,
+        saturatedFat: 10,
+        cholesterol: 62,
+        sodium: 300,
+        carbohydrates: 66,
+        fiber: 5,
+        sugar: 32,
+        protein: 8
     },
     "Peanut Butter": {
-        calories: 581,
-        fat: 35,
-        saturatedFat: 16,
-        cholesterol: 81,
-        sodium: 403,
-        carbohydrates: 61,
+        calories: 490,
+        fat: 27,
+        saturatedFat: 12,
+        cholesterol: 62,
+        sodium: 340,
+        carbohydrates: 57,
         fiber: 3,
-        sugar: 42,
-        protein: 16
+        sugar: 33,
+        protein: 11
     },
     "Red Velvet": {
-        calories: 532,
-        fat: 26,
-        saturatedFat: 16,
-        cholesterol: 97,
-        sodium: 387,
-        carbohydrates: 74,
-        fiber: 3,
-        sugar: 45,
+        calories: 465,
+        fat: 22,
+        saturatedFat: 12,
+        cholesterol: 65,
+        sodium: 330,
+        carbohydrates: 63,
+        fiber: 2,
+        sugar: 38,
         protein: 6
     }
 };
 
-const mixinNutrition = {
+const mixinNutrition: { [key: string]: NutritionData } = {
     "chocolate chips": {
         calories: 545,
         fat: 31,
         saturatedFat: 19,
-        cholesterol: 0,
+        cholesterol: 3,
         sodium: 24,
         carbohydrates: 63,
         fiber: 4,
@@ -196,14 +195,14 @@ const mixinNutrition = {
         protein: 6
     },
     "white chocolate": {
-        calories: 549,
+        calories: 550,
         fat: 32,
         saturatedFat: 20,
         cholesterol: 21,
         sodium: 90,
         carbohydrates: 59,
         fiber: 0,
-        sugar: 59,
+        sugar: 58,
         protein: 6
     },
     "nuts": {
@@ -218,7 +217,7 @@ const mixinNutrition = {
         protein: 21
     },
     "m&ms": {
-        calories: 479,
+        calories: 485,
         fat: 20,
         saturatedFat: 12,
         cholesterol: 5,
@@ -230,52 +229,19 @@ const mixinNutrition = {
     },
     "sprinkles": {
         calories: 389,
-        fat: 0,
-        saturatedFat: 0,
+        fat: 3,
+        saturatedFat: 2,
         cholesterol: 0,
         sodium: 37,
-        carbohydrates: 96,
+        carbohydrates: 89,
         fiber: 0,
-        sugar: 93,
+        sugar: 85,
         protein: 0
     }
 };
 
-// Add this function to calculate combined nutrition values
-const calculateTotalNutrition = (base: string, mixins: string[]) => {
-    const baseNutritionValues = baseNutrition[base] || baseNutrition["Classic"];
-
-    if (mixins.length === 0) return baseNutritionValues;
-
-    // Calculate the proportion for base and mixins
-    const baseRatio = 0.8; // Base is 80% of the recipe
-    const mixinRatio = 0.2 / mixins.length; // Remaining 20% split between mixins
-
-    // Start with base values multiplied by ratio
-    const totalNutrition = Object.entries(baseNutritionValues).reduce((acc, [key, value]) => {
-        acc[key] = value * baseRatio;
-        return acc;
-    }, {});
-
-    // Add mixin values
-    mixins.forEach(mixin => {
-        if (mixinNutrition[mixin]) {
-            Object.entries(mixinNutrition[mixin]).forEach(([key, value]) => {
-                totalNutrition[key] += value * mixinRatio;
-            });
-        }
-    });
-
-    // Round all values
-    Object.keys(totalNutrition).forEach(key => {
-        totalNutrition[key] = Math.round(totalNutrition[key]);
-    });
-
-    return totalNutrition;
-};
-
 // Add recipe notes after baseRecipes
-const recipeNotes = {
+const recipeNotes: { [key: string]: string[] } = {
     "Classic": [
         "For softer cookies, reduce baking time by 1-2 minutes",
         "Chill dough for 24 hours for enhanced flavor",
@@ -303,6 +269,40 @@ const recipeNotes = {
     ]
 };
 
+function calculateTotalNutrition(base: string, mixins: string[]): NutritionData {
+    // Get base nutrition
+    const baseNutritionValues = baseNutrition[base] || baseNutrition["Classic"];
+    
+    // If no mixins, return base nutrition
+    if (!mixins.length) return baseNutritionValues;
+
+    // Calculate mixin portion (1.5 cups total divided by number of mixins)
+    const mixinPortion = 1.5 / mixins.length;
+
+    // Start with base nutrition values
+    const totalNutrition = { ...baseNutritionValues };
+
+    // Add nutrition from each mixin
+    mixins.forEach(mixin => {
+        if (mixinNutrition[mixin]) {
+            const mixinValues = mixinNutrition[mixin];
+            // Add proportional nutrition values from each mixin
+            Object.keys(mixinValues).forEach(key => {
+                totalNutrition[key as keyof NutritionData] += 
+                    Math.round((mixinValues[key as keyof NutritionData] * mixinPortion));
+            });
+        }
+    });
+
+    // Round all values to nearest integer
+    Object.keys(totalNutrition).forEach(key => {
+        totalNutrition[key as keyof NutritionData] = 
+            Math.round(totalNutrition[key as keyof NutritionData]);
+    });
+
+    return totalNutrition;
+}
+
 export default function CookieRecipePage() {
     const searchParams = new URLSearchParams(window.location.search);
 
@@ -316,7 +316,6 @@ export default function CookieRecipePage() {
     const baseRecipe = baseRecipes[base] || baseRecipes["Classic"];
     const mixinIngredients = mixins.map(mixin => {
         const amount = mixins.length > 0 ? 1.5 / mixins.length : 0;
-        // Format the fraction nicely
         const fraction = amount === 0.5 ? "½"
             : amount === 0.75 ? "¾"
                 : amount === 0.25 ? "¼"
@@ -325,63 +324,19 @@ export default function CookieRecipePage() {
         return `${fraction} cup ${mixin}`;
     });
 
-    const [showTooltip, setShowTooltip] = useState(false);
-
-    // Add state for checked ingredients
-    const [checkedIngredients, setCheckedIngredients] = useState<Set<string>>(new Set());
-
-    const toggleIngredient = (ingredient: string) => {
-        const newChecked = new Set(checkedIngredients);
-        if (newChecked.has(ingredient)) {
-            newChecked.delete(ingredient);
-        } else {
-            newChecked.add(ingredient);
-        }
-        setCheckedIngredients(newChecked);
+    // Create the complete recipe data object
+    const recipeData: RecipeData = {
+        title: recipeTitle,
+        prepTime: COOKIE_PREP_TIME,
+        cookTime: COOKIE_COOK_TIME,
+        recipeYield: COOKIE_YIELD,
+        previewFolder: "cookies",
+        previewItems: [base, ...mixins],
+        ingredients: [...baseRecipe.ingredients, ...mixinIngredients],
+        instructions: baseRecipe.instructions,
+        notes: recipeNotes[base] || recipeNotes["Classic"],
+        nutritionData: calculateTotalNutrition(base, mixins) as NutritionData
     };
-
-    const [isDownloading, setIsDownloading] = useState(false);
-
-    const handleDownload = async () => {
-        if (isDownloading) return;
-        
-        setIsDownloading(true);
-        const instructions = [...baseRecipe.instructions];
-        if (mixins.length > 0) {
-            instructions.push(`Fold in ${mixins.length > 1
-                ? mixins.slice(0, -1).join(', ') + ' and ' + mixins.slice(-1)
-                : mixins[0]} until evenly distributed`);
-        }
-
-        const recipeData = {
-            title: recipeTitle,
-            ingredients: [...baseRecipe.ingredients, ...mixinIngredients],
-            instructions,
-            nutritionData: calculateTotalNutrition(base, mixins),
-            baseType: base,
-            mixins: mixins,
-            prepTime: COOKIE_PREP_TIME,
-            cookTime: COOKIE_COOK_TIME,
-            yield: COOKIE_YIELD
-        };
-
-        const doc = await generateRecipePDF(recipeData);
-        doc.save(`${recipeTitle.toLowerCase().replace(/ /g, '_')}.pdf`);
-        setIsDownloading(false);
-    };
-
-    const handleShare = async () => {
-        try {
-            if (showTooltip) return;
-            await navigator.clipboard.writeText(window.location.href);
-            setShowTooltip(true);
-            setTimeout(() => setShowTooltip(false), 2000);
-        } catch (err) {
-            alert('Failed to copy URL to clipboard');
-        }
-    };
-
-    const nutritionData = calculateTotalNutrition(base, mixins);
 
     const metaDescription = "Delicious cookie recipe. Complete with ingredients, instructions, and nutritional information.";
 
@@ -401,182 +356,7 @@ export default function CookieRecipePage() {
                 <meta name="keywords" content={`cookie recipe, ${base.toLowerCase()} cookies, ${mixins.join(', ').toLowerCase()}, baking, dessert, homemade cookies`} />
             </Helmet>
 
-            <div className="max-w-screen-lg w-full mx-auto p-4 flex flex-col md:grid md:grid-cols-3 gap-6">
-                <div className="md:col-span-2">
-                    <div className="mb-8">
-                        <h1 className="text-4xl font-bold mb-4">
-                            {recipeTitle}
-                        </h1>
-
-                        <div className="mt-2 flex flex-wrap flex-col md:flex-row gap-x-4 gap-y-2 mb-6 text-gray-600">
-                            <div className="flex items-center gap-2">
-                                <ClockIcon className="w-5 h-5" />
-                                <p><span className="text-gray-900 font-semibold">Prep Time:</span> {COOKIE_PREP_TIME}</p>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <Clock8Icon className="w-5 h-5" />
-                                <p><span className="text-gray-900 font-semibold">Cook Time:</span> {COOKIE_COOK_TIME}</p>
-                            </div>
-                            <div className="flex items-center gap-2">
-                                <UtensilsIcon className="w-5 h-5" />
-                                <p><span className="text-gray-900 font-semibold">Yield:</span> {COOKIE_YIELD}</p>
-                            </div>
-                        </div>
-
-                        <div className="flex flex-col md:flex-row gap-2">
-                            <Button onClick={handleDownload} loading={isDownloading}>
-                                <DownloadIcon className="w-5 h-5" />
-                                Download PDF
-                            </Button>
-
-                            <div className="relative">
-                                <Button variant="secondary" onClick={handleShare} className="w-full">
-                                    <LinkIcon className="w-5 h-5" />
-                                    Copy Link
-                                </Button>
-                                {showTooltip && (
-                                    <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-2 py-1 bg-gray-800 text-white text-sm rounded shadow-lg whitespace-nowrap">
-                                        <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-gray-800 rotate-45"></div>
-                                        Link copied!
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="md:hidden mb-6">
-                        <Preview folder="cookies" items={[base, ...mixins]} />
-                    </div>
-
-                    <section className="mb-8">
-                        <h2 className="text-2xl font-bold mb-4">Ingredients</h2>
-                        <ul className="list-none space-y-2">
-                            {baseRecipe.ingredients.map((ingredient, index) => (
-                                <li key={`base-${index}`} className="flex items-center gap-2">
-                                    <button
-                                        onClick={() => toggleIngredient(ingredient)}
-                                        className={`w-5 h-5 rounded border flex-shrink-0 flex items-center justify-center
-                                        ${checkedIngredients.has(ingredient)
-                                                ? 'bg-purple-500 border-purple-500 text-white'
-                                                : 'border-gray-300'}`}
-                                    >
-                                        {checkedIngredients.has(ingredient) && <CheckIcon className="w-4 h-4" />}
-                                    </button>
-                                    <span
-                                        className={`${checkedIngredients.has(ingredient) && 'line-through text-gray-500'} cursor-pointer`}
-                                        onClick={() => toggleIngredient(ingredient)}
-                                    >
-                                        {ingredient}
-                                    </span>
-                                </li>
-                            ))}
-                            {mixinIngredients.map((ingredient, index) => (
-                                <li key={`mixin-${index}`} className="flex items-center gap-2">
-                                    <button
-                                        onClick={() => toggleIngredient(ingredient)}
-                                        className={`w-5 h-5 rounded border flex-shrink-0 flex items-center justify-center
-                                        ${checkedIngredients.has(ingredient)
-                                                ? 'bg-purple-500 border-purple-500 text-white'
-                                                : 'border-gray-300'}`}
-                                    >
-                                        {checkedIngredients.has(ingredient) && <CheckIcon className="w-4 h-4" />}
-                                    </button>
-                                    <span
-                                        className={`${checkedIngredients.has(ingredient) && 'line-through text-gray-500'} cursor-pointer`}
-                                        onClick={() => toggleIngredient(ingredient)}
-                                    >
-                                        {ingredient}
-                                    </span>
-                                </li>
-                            ))}
-                        </ul>
-                    </section>
-
-                    <section className="mb-8">
-                        <h2 className="text-2xl font-bold mb-4">Instructions</h2>
-                        <ol className="list-none space-y-4">
-                            {baseRecipe.instructions.map((instruction, index) => (
-                                <li key={index} className="flex items-start gap-2">
-                                    <div className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-500 text-white flex items-center justify-center text-sm font-semibold">
-                                        {index + 1}
-                                    </div>
-                                    <span>{instruction}</span>
-                                </li>
-                            ))}
-                            {mixins.length > 0 && (
-                                <li className="flex items-start gap-2">
-                                    <div className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-500 text-white flex items-center justify-center text-sm font-semibold">
-                                        {baseRecipe.instructions.length + 1}
-                                    </div>
-                                    <span>
-                                        Fold in {mixins.length > 1
-                                            ? mixins.slice(0, -1).join(', ') + ' and ' + mixins.slice(-1)
-                                            : mixins[0]} until evenly distributed
-                                    </span>
-                                </li>
-                            )}
-                        </ol>
-                    </section>
-
-                    <section className="mb-8">
-                        <h2 className="text-2xl font-bold mb-4">Recipe Notes</h2>
-                        <ul className="list-disc list-outside pl-4 space-y-2">
-                            {recipeNotes[base]?.map((note, index) => (
-                                <li key={index}>{note}</li>
-                            ))}
-                        </ul>
-                    </section>
-
-                    <section>
-                        <h2 className="text-2xl font-bold mb-4">Nutrition Per 100g</h2>
-                        <table className="sm:max-w-[320px] w-full border rounded-lg">
-                            <tbody>
-                                <tr className="border-b even:bg-gray-100 odd:bg-white">
-                                    <td className="font-medium py-1 px-2">Calories:</td>
-                                    <td className="text-right px-2 py-1">{nutritionData.calories} kcal</td>
-                                </tr>
-                                <tr className="border-b even:bg-gray-100 odd:bg-white">
-                                    <td className="font-medium py-1 px-2">Total Fat:</td>
-                                    <td className="text-right px-2 py-1">{nutritionData.fat}g</td>
-                                </tr>
-                                <tr className="border-b even:bg-gray-100 odd:bg-white">
-                                    <td className="font-medium py-1 px-2">Saturated Fat:</td>
-                                    <td className="text-right px-2 py-1">{nutritionData.saturatedFat}g</td>
-                                </tr>
-                                <tr className="border-b even:bg-gray-100 odd:bg-white">
-                                    <td className="font-medium py-1 px-2">Cholesterol:</td>
-                                    <td className="text-right px-2 py-1">{nutritionData.cholesterol}mg</td>
-                                </tr>
-                                <tr className="border-b even:bg-gray-100 odd:bg-white">
-                                    <td className="font-medium py-1 px-2">Sodium:</td>
-                                    <td className="text-right px-2 py-1">{nutritionData.sodium}mg</td>
-                                </tr>
-                                <tr className="border-b even:bg-gray-100 odd:bg-white">
-                                    <td className="font-medium py-1 px-2">Total Carbohydrates:</td>
-                                    <td className="text-right px-2 py-1">{nutritionData.carbohydrates}g</td>
-                                </tr>
-                                <tr className="border-b even:bg-gray-100 odd:bg-white">
-                                    <td className="font-medium py-1 px-2">Dietary Fiber:</td>
-                                    <td className="text-right px-2 py-1">{nutritionData.fiber}g</td>
-                                </tr>
-                                <tr className="border-b even:bg-gray-100 odd:bg-white">
-                                    <td className="font-medium py-1 px-2">Sugars:</td>
-                                    <td className="text-right px-2 py-1">{nutritionData.sugar}g</td>
-                                </tr>
-                                <tr className="border-b even:bg-gray-100 odd:bg-white">
-                                    <td className="font-medium py-1 px-2">Protein:</td>
-                                    <td className="text-right px-2 py-1">{nutritionData.protein}g</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <p className="text-gray-500 text-sm mt-2">Nutrition information is automatically calculated, so should only be used as an approximation.</p>
-                    </section>
-                </div>
-
-                <div className="hidden md:block md:col-span-1 sticky top-20 h-fit">
-                    <Preview folder="cookies" items={[base, ...mixins]} />
-                </div>
-            </div>
+            <RecipeTemplate recipe={recipeData} />
         </>
     );
 }

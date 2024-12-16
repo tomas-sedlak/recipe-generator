@@ -1,4 +1,7 @@
+// React Router
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
+// Components
 import ScrollToTop from './components/common/ScrollToTop';
 import Header from './components/sections/Header';
 import Footer from './components/sections/Footer';
@@ -6,7 +9,7 @@ import Footer from './components/sections/Footer';
 // Import pages
 import HomePage from './pages/HomePage';
 import GenerateCookiesPage from './pages/GenerateCookiesPage';
-import CookieRecipePage from './pages/CookieRecipePage1';
+import CookieRecipePage from './pages/CookieRecipePage';
 import GenerateMuffinsPage from './pages/GenerateMuffinsPage';
 import MuffinsRecipePage from './pages/MuffinsRecipePage';
 import NotFoundPage from './pages/NotFoundPage';

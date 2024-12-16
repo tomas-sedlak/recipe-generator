@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { snakeCase } from "lodash";
+import { ShuffleIcon } from "lucide-react";
+
+// Components
 import Card from "../components/common/Card";
 import Button from "../components/common/Button";
 import Preview from "../components/common/Preview";
-import { ShuffleIcon } from "lucide-react";
 
 // Base Items with dynamic image paths
 const baseItems: string[] = ["Classic", "Cocoa", "Banana", "Carrot", "Pumpkin"];
@@ -19,6 +21,7 @@ export default function GenerateMuffinsPage() {
   const [base, setBase] = useState<string>(baseItems[0]);
   const [mixins, setMixins] = useState<string[]>([]);
   const [frosting, setFrosting] = useState<string | null>(null);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const navigate = useNavigate();
 
@@ -43,9 +46,9 @@ export default function GenerateMuffinsPage() {
 
   const handleRandomIngredients = () => {
     const randomBase = baseItems[Math.floor(Math.random() * baseItems.length)];
-    
+
     // 50% chance of having frosting
-    const randomFrosting = Math.random() < 0.5 
+    const randomFrosting = Math.random() < 0.5
       ? frostingItems[Math.floor(Math.random() * frostingItems.length)]
       : null;
 
@@ -59,7 +62,12 @@ export default function GenerateMuffinsPage() {
     setMixins(shuffledMixins);
   };
 
-  const handleGenerateRecipe = () => {
+  const handleGenerateRecipe = async () => {
+    setIsGenerating(true);
+
+    // Show loading state for random seconds
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 1000 + 1000));
+
     const searchParams = new URLSearchParams({
       base: base,
       ...(frosting && { frosting }),
@@ -68,6 +76,23 @@ export default function GenerateMuffinsPage() {
 
     navigate(`/muffins?${searchParams.toString()}`);
   };
+
+  if (isGenerating) {
+    return (
+      <div className="max-w-screen-lg mx-auto px-4 my-8 flex-grow flex items-center justify-center">
+        <div className="text-center">
+          <div className="mb-8">
+            <img
+              src={`/images/muffins/${snakeCase(base)}_preview.png`}
+              alt="Muffin"
+              className="w-32 h-32 mx-auto animate-bounce"
+            />
+          </div>
+          <p className="text-lg font-medium">Preparing Your Recipe...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-screen-lg w-full mx-auto px-4 py-8">
@@ -134,7 +159,7 @@ export default function GenerateMuffinsPage() {
         </div>
 
         <div className="hidden md:block sticky top-20 h-fit">
-          <Preview folder="muffins" items={[base, frosting, ...mixins].filter(Boolean)} />
+          <Preview folder="muffins" items={[base, ...(frosting ? [frosting] : []), ...mixins].filter(Boolean)} />
         </div>
 
         <div className="col-span-2 text-center">
