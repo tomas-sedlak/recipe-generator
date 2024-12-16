@@ -4,6 +4,7 @@ import RecipeTemplate from '../templates/RecipeTemplate';
 
 // Types
 import RecipeData, { NutritionData } from '../types/RecipeTypes';
+import { formatArray } from '../utils/formatArray';
 
 const COOKIE_PREP_TIME = "15 minutes";
 const COOKIE_COOK_TIME = "10-12 minutes";
@@ -272,7 +273,7 @@ const recipeNotes: { [key: string]: string[] } = {
 function calculateTotalNutrition(base: string, mixins: string[]): NutritionData {
     // Get base nutrition
     const baseNutritionValues = baseNutrition[base] || baseNutrition["Classic"];
-    
+
     // If no mixins, return base nutrition
     if (!mixins.length) return baseNutritionValues;
 
@@ -288,7 +289,7 @@ function calculateTotalNutrition(base: string, mixins: string[]): NutritionData 
             const mixinValues = mixinNutrition[mixin];
             // Add proportional nutrition values from each mixin
             Object.keys(mixinValues).forEach(key => {
-                totalNutrition[key as keyof NutritionData] += 
+                totalNutrition[key as keyof NutritionData] +=
                     Math.round((mixinValues[key as keyof NutritionData] * mixinPortion));
             });
         }
@@ -296,7 +297,7 @@ function calculateTotalNutrition(base: string, mixins: string[]): NutritionData 
 
     // Round all values to nearest integer
     Object.keys(totalNutrition).forEach(key => {
-        totalNutrition[key as keyof NutritionData] = 
+        totalNutrition[key as keyof NutritionData] =
             Math.round(totalNutrition[key as keyof NutritionData]);
     });
 
@@ -310,7 +311,7 @@ export default function CookieRecipePage() {
     const mixins = (searchParams.get('mixins') || "").split(',').filter(Boolean);
 
     const recipeTitle = `${base} Cookie Recipe${mixins.length > 0
-        ? ` with ${mixins.length > 1 ? mixins.slice(0, -1).join(', ') + ' and ' + mixins.slice(-1) : mixins[0]}`
+        ? ` with ${formatArray(mixins)}`
         : ''}`;
 
     const baseRecipe = baseRecipes[base] || baseRecipes["Classic"];
@@ -333,9 +334,13 @@ export default function CookieRecipePage() {
         previewFolder: "cookies",
         previewItems: [base, ...mixins],
         ingredients: [...baseRecipe.ingredients, ...mixinIngredients],
-        instructions: baseRecipe.instructions,
+        instructions: [
+            ...baseRecipe.instructions.slice(0, -2), // Remove last two steps
+            ...(mixins.length > 0 ? [`Fold in ${formatArray(mixins)}`] : []),
+            ...baseRecipe.instructions.slice(-2) // Add back last two steps
+        ],
         notes: recipeNotes[base] || recipeNotes["Classic"],
-        nutritionData: calculateTotalNutrition(base, mixins) as NutritionData
+        nutritionData: calculateTotalNutrition(base, mixins)
     };
 
     const metaDescription = "Delicious cookie recipe. Complete with ingredients, instructions, and nutritional information.";
