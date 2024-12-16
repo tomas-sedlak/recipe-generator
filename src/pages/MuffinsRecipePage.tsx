@@ -127,153 +127,153 @@ const baseRecipes: { [key: string]: { ingredients: string[], instructions: strin
 
 const baseNutrition: { [key: string]: NutritionData } = {
     "Classic": {
-        calories: 180,
-        fat: 7,
-        saturatedFat: 1,
-        cholesterol: 35,
-        sodium: 200,
-        carbohydrates: 26,
-        fiber: 1,
-        sugar: 8,
-        protein: 4
+        calories: 340,
+        fat: 14,
+        saturatedFat: 2,
+        cholesterol: 45,
+        sodium: 400,
+        carbohydrates: 50,
+        fiber: 2,
+        sugar: 20,
+        protein: 6
     },
     "Cocoa": {
-        calories: 200,
-        fat: 9,
-        saturatedFat: 1,
-        cholesterol: 35,
-        sodium: 200,
-        carbohydrates: 28,
-        fiber: 2,
-        sugar: 12,
-        protein: 4
+        calories: 360,
+        fat: 16,
+        saturatedFat: 3,
+        cholesterol: 45,
+        sodium: 400,
+        carbohydrates: 52,
+        fiber: 4,
+        sugar: 25,
+        protein: 7
     },
     "Banana": {
-        calories: 190,
-        fat: 7,
-        saturatedFat: 1,
-        cholesterol: 35,
-        sodium: 190,
-        carbohydrates: 30,
-        fiber: 2,
-        sugar: 14,
-        protein: 4
+        calories: 350,
+        fat: 14,
+        saturatedFat: 2,
+        cholesterol: 45,
+        sodium: 380,
+        carbohydrates: 55,
+        fiber: 3,
+        sugar: 28,
+        protein: 6
     },
     "Carrot": {
-        calories: 185,
-        fat: 7,
-        saturatedFat: 1,
-        cholesterol: 35,
-        sodium: 200,
-        carbohydrates: 27,
-        fiber: 2,
-        sugar: 10,
-        protein: 4
+        calories: 330,
+        fat: 13,
+        saturatedFat: 2,
+        cholesterol: 45,
+        sodium: 400,
+        carbohydrates: 51,
+        fiber: 3,
+        sugar: 22,
+        protein: 6
     },
     "Pumpkin": {
-        calories: 195,
-        fat: 8,
-        saturatedFat: 1,
-        cholesterol: 35,
-        sodium: 200,
-        carbohydrates: 28,
-        fiber: 2,
-        sugar: 11,
-        protein: 4
+        calories: 335,
+        fat: 15,
+        saturatedFat: 2,
+        cholesterol: 45,
+        sodium: 400,
+        carbohydrates: 52,
+        fiber: 3,
+        sugar: 24,
+        protein: 6
     }
 };
 
 const mixinNutrition: { [key: string]: NutritionData } = {
     "Chocolate Chunks": {
-        calories: 120,
-        fat: 7,
-        saturatedFat: 4,
+        calories: 545,
+        fat: 31,
+        saturatedFat: 19,
         cholesterol: 0,
-        sodium: 10,
-        carbohydrates: 15,
-        fiber: 1,
-        sugar: 13,
-        protein: 1
-    },
-    "Nuts": {
-        calories: 160,
-        fat: 14,
-        saturatedFat: 1,
-        cholesterol: 0,
-        sodium: 0,
-        carbohydrates: 6,
-        fiber: 3,
-        sugar: 1,
+        sodium: 50,
+        carbohydrates: 60,
+        fiber: 7,
+        sugar: 50,
         protein: 6
     },
+    "Nuts": {
+        calories: 607,
+        fat: 54,
+        saturatedFat: 4,
+        cholesterol: 0,
+        sodium: 0,
+        carbohydrates: 24,
+        fiber: 12,
+        sugar: 4,
+        protein: 21
+    },
     "Blueberries": {
-        calories: 40,
+        calories: 57,
         fat: 0,
         saturatedFat: 0,
         cholesterol: 0,
-        sodium: 0,
-        carbohydrates: 10,
+        sodium: 1,
+        carbohydrates: 14,
         fiber: 2,
-        sugar: 7,
+        sugar: 10,
         protein: 1
     },
     "Candy": {
-        calories: 140,
-        fat: 5,
-        saturatedFat: 3,
+        calories: 470,
+        fat: 17,
+        saturatedFat: 10,
         cholesterol: 0,
-        sodium: 20,
-        carbohydrates: 22,
+        sodium: 200,
+        carbohydrates: 80,
         fiber: 0,
-        sugar: 20,
-        protein: 1
+        sugar: 65,
+        protein: 3
     },
     "Mini Marshmallows": {
-        calories: 100,
+        calories: 318,
         fat: 0,
         saturatedFat: 0,
         cholesterol: 0,
-        sodium: 25,
-        carbohydrates: 24,
+        sodium: 80,
+        carbohydrates: 82,
         fiber: 0,
-        sugar: 22,
-        protein: 1
+        sugar: 75,
+        protein: 2
     }
 };
 
 const frostingNutrition: { [key: string]: NutritionData } = {
     "Vanilla": {
-        calories: 120,
-        fat: 6,
-        saturatedFat: 4,
-        cholesterol: 15,
-        sodium: 50,
-        carbohydrates: 16,
+        calories: 400,
+        fat: 20,
+        saturatedFat: 13,
+        cholesterol: 50,
+        sodium: 170,
+        carbohydrates: 54,
         fiber: 0,
-        sugar: 15,
-        protein: 0
-    },
-    "Chocolate": {
-        calories: 130,
-        fat: 6,
-        saturatedFat: 4,
-        cholesterol: 15,
-        sodium: 50,
-        carbohydrates: 18,
-        fiber: 1,
-        sugar: 16,
+        sugar: 50,
         protein: 1
     },
+    "Chocolate": {
+        calories: 410,
+        fat: 20,
+        saturatedFat: 13,
+        cholesterol: 50,
+        sodium: 170,
+        carbohydrates: 58,
+        fiber: 3,
+        sugar: 52,
+        protein: 2
+    },
     "Caramel": {
-        calories: 125,
-        fat: 5,
-        saturatedFat: 3,
-        cholesterol: 15,
-        sodium: 60,
-        carbohydrates: 19,
+        calories: 415,
+        fat: 17,
+        saturatedFat: 10,
+        cholesterol: 50,
+        sodium: 200,
+        carbohydrates: 63,
         fiber: 0,
-        sugar: 18,
-        protein: 0
+        sugar: 60,
+        protein: 1
     }
 };
 
