@@ -1,29 +1,6 @@
 import jsPDF from 'jspdf';
 import { snakeCase } from 'lodash';
-
-interface NutritionData {
-    calories: number;
-    fat: number;
-    saturatedFat: number;
-    cholesterol: number;
-    sodium: number;
-    carbohydrates: number;
-    fiber: number;
-    sugar: number;
-    protein: number;
-}
-
-interface RecipeData {
-    title: string;
-    ingredients: string[];
-    instructions: string[];
-    nutritionData: NutritionData;
-    baseType: string;
-    mixins: string[];
-    prepTime: string;
-    cookTime: string;
-    yield: string;
-}
+import RecipeData from '../types/Recipe';
 
 const loadImage = async (url: string): Promise<HTMLImageElement> => {
     return new Promise((resolve, reject) => {
@@ -78,14 +55,14 @@ export const generateRecipePDF = async (recipe: RecipeData) => {
     const cookingInfo = [
         { label: 'Prep Time:', value: recipe.prepTime },
         { label: 'Cook Time:', value: recipe.cookTime },
-        { label: 'Yield:', value: recipe.yield }
+        { label: 'Yield:', value: recipe.recipeYield }
     ];
 
     cookingInfo.forEach((info) => {
         doc.setFont('helvetica', 'bold');
         const labelWidth = doc.getTextWidth(info.label);
         doc.text(info.label, margin, yPosition);
-        
+
         doc.setFont('helvetica', 'normal');
         doc.text(info.value, margin + labelWidth + 2, yPosition);
         yPosition += lineHeight;
@@ -98,7 +75,7 @@ export const generateRecipePDF = async (recipe: RecipeData) => {
     const imageY = margin;
 
     try {
-        await addStackedImages(doc, 'cookies', [recipe.baseType, ...recipe.mixins], imageX, imageY, imageSize);
+        await addStackedImages(doc, 'cookies', recipe.ingredients, imageX, imageY, imageSize);
         yPosition = Math.max(yPosition, imageY + imageSize + lineHeight);
     } catch (error) {
         console.error('Failed to add cookie preview:', error);
@@ -217,22 +194,22 @@ export const generateRecipePDF = async (recipe: RecipeData) => {
         doc.setFontSize(10);
         doc.setTextColor(100);
         doc.setFont('helvetica', 'normal');
-        
+
         // Add logo
         try {
             const logoImg = await loadImage('/images/logo.png');
             doc.addImage(
-                logoImg, 
-                'PNG', 
-                margin, 
+                logoImg,
+                'PNG',
+                margin,
                 pageHeight - (margin / 2) - 7, // Center vertically with text
-                footerLogoSize, 
+                footerLogoSize,
                 footerLogoSize
             );
         } catch (error) {
             console.error('Failed to load footer logo:', error);
         }
-        
+
         // Add text next to logo
         doc.text(footerText, footerTextX, pageHeight - margin / 2);
     }
