@@ -81,6 +81,19 @@ export const generateRecipePDF = async (recipe: RecipeData) => {
         console.error('Failed to add cookie preview:', error);
     }
 
+    // Add Description section
+    addNewPageIfNeeded(lineHeight * 2);
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Description:', margin, yPosition);
+    yPosition += lineHeight;
+
+    doc.setFontSize(12);
+    doc.setFont('helvetica', 'normal');
+    const descriptionLines = doc.splitTextToSize(recipe.description, contentWidth);
+    doc.text(descriptionLines, margin, yPosition);
+    yPosition += descriptionLines.length * lineHeight;
+
     // Add Ingredients section
     addNewPageIfNeeded(lineHeight * 2);
     doc.setFontSize(16);
