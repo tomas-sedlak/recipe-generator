@@ -306,6 +306,30 @@ const recipeNotes: { [key: string]: string[] } = {
   ]
 };
 
+// Add these new constants after the existing recipe data
+const MUFFIN_DESCRIPTIONS: { [key: string]: string } = {
+  "Classic": "Light and fluffy classic muffins with a tender crumb and golden top. These versatile muffins are perfect for breakfast or as a snack any time of day.",
+  "Cocoa": "Rich chocolate muffins that are moist and decadent. A chocolate lover's breakfast dream with deep cocoa flavor in every bite.",
+  "Banana": "Moist and flavorful banana muffins made with perfectly ripe bananas. A delicious way to use overripe bananas for a breakfast treat.",
+  "Carrot": "Wholesome carrot muffins packed with freshly grated carrots and warm spices. A nutritious breakfast option that tastes like a treat.",
+  "Pumpkin": "Perfectly spiced pumpkin muffins with a soft, tender crumb. These seasonal favorites are wonderful during fall but delicious year-round."
+};
+
+const BAKING_TIPS = [
+  "Use room temperature ingredients for the best texture",
+  "Don't overmix the batter - some lumps are normal",
+  "Fill muffin cups ⅔ full for perfect domes",
+  "Test doneness with a toothpick in the center",
+  "Let muffins cool in the pan for 5 minutes before removing",
+  "Use paper liners for easy cleanup and storage"
+];
+
+const STORAGE_INFO = [
+  "Up to 3 days in an airtight container at room temperature",
+  "Up to 3 months when properly wrapped and stored in a freezer-safe container",
+  "For best results, warm slightly before serving frozen muffins"
+];
+
 function calculateTotalNutrition(base: string, mixins: string[], frosting?: string): NutritionData {
   // Get base nutrition
   const baseNutritionValues = baseNutrition[base] || baseNutrition["Classic"];
@@ -375,15 +399,18 @@ export default function MuffinsRecipePage() {
     cookTime: MUFFIN_COOK_TIME,
     recipeYield: MUFFIN_YIELD,
     previewFolder: "muffins",
+    description: MUFFIN_DESCRIPTIONS[base],
     previewItems: [base, ...(frosting ? [frosting] : []), ...mixins],
     ingredients: [...baseRecipe.ingredients, ...mixinIngredients],
     instructions: [
-      ...baseRecipe.instructions.slice(0, -2), // Remove last two instructions
+      ...baseRecipe.instructions.slice(0, -2),
       ...(mixins.length > 0 ? [`Gently fold in ${formatArray(mixins)}`] : []),
-      ...baseRecipe.instructions.slice(-2) // Add back last two steps
+      ...baseRecipe.instructions.slice(-2)
     ],
     notes: recipeNotes[base] || recipeNotes["Classic"],
-    nutritionData: calculateTotalNutrition(base, mixins, frosting)
+    nutritionData: calculateTotalNutrition(base, mixins, frosting),
+    bakingTips: BAKING_TIPS,
+    storageInfo: STORAGE_INFO,
   };
 
   const metaDescription = "Delicious muffin recipe. Complete with ingredients, instructions, and nutritional information.";

@@ -270,6 +270,30 @@ const recipeNotes: { [key: string]: string[] } = {
     ]
 };
 
+// Add these new constants
+const COOKIE_DESCRIPTIONS: { [key: string]: string } = {
+    "Classic": "Our classic chocolate chip cookies are soft, chewy, and perfectly golden brown. Made with high-quality butter and vanilla, these timeless favorites strike the perfect balance between crispy edges and gooey centers.",
+    "Cocoa": "Rich, decadent chocolate cookies that satisfy even the most intense chocolate cravings. Double the chocolate flavor makes these cookies a chocolate lover's dream come true.",
+    "Oat": "Hearty and wholesome oatmeal cookies with a perfect blend of warming spices. These cookies offer a satisfying chewy texture and nostalgic homemade taste.",
+    "Peanut Butter": "Irresistibly nutty and rich peanut butter cookies that melt in your mouth. Each bite delivers the perfect combination of sweet and salty flavors.",
+    "Red Velvet": "Stunning red velvet cookies with a subtle cocoa flavor and beautiful crimson color. These eye-catching treats are perfect for special occasions or when you want to impress."
+};
+
+const BAKING_TIPS = [
+    "Always use room temperature ingredients for the best results",
+    "Measure flour correctly by spooning it into measuring cups and leveling off",
+    "Use parchment paper or silicone baking mats for easy cleanup",
+    "Rotate baking sheets halfway through baking for even results",
+    "Let cookies cool on the baking sheet for 5 minutes before transferring",
+    "Store cookies in an airtight container to maintain freshness"
+];
+
+const STORAGE_INFO = [
+    "Up to 5 days in an airtight container at room temperature",
+    "Up to 3 months when properly wrapped and stored in a freezer-safe container",
+    "Raw cookie dough can be refrigerated for up to 3 days or frozen for up to 3 months"
+];
+
 function calculateTotalNutrition(base: string, mixins: string[]): NutritionData {
     // Get base nutrition
     const baseNutritionValues = baseNutrition[base] || baseNutrition["Classic"];
@@ -332,6 +356,7 @@ export default function CookieRecipePage() {
         cookTime: COOKIE_COOK_TIME,
         recipeYield: COOKIE_YIELD,
         previewFolder: "cookies",
+        description: COOKIE_DESCRIPTIONS[base],
         previewItems: [base, ...mixins],
         ingredients: [...baseRecipe.ingredients, ...mixinIngredients],
         instructions: [
@@ -339,8 +364,10 @@ export default function CookieRecipePage() {
             ...(mixins.length > 0 ? [`Fold in ${formatArray(mixins)}`] : []),
             ...baseRecipe.instructions.slice(-2) // Add back last two steps
         ],
-        notes: recipeNotes[base] || recipeNotes["Classic"],
-        nutritionData: calculateTotalNutrition(base, mixins)
+        notes: recipeNotes[base],
+        nutritionData: calculateTotalNutrition(base, mixins),
+        bakingTips: BAKING_TIPS,
+        storageInfo: STORAGE_INFO,
     };
 
     const metaDescription = "Delicious cookie recipe. Complete with ingredients, instructions, and nutritional information.";

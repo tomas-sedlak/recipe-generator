@@ -105,6 +105,11 @@ export default function RecipeTemplate({ recipe }: { recipe: RecipeData }) {
                 </div>
 
                 <section className="mb-8">
+                    <h2 className="text-2xl font-bold mb-4">Description</h2>
+                    <p>{recipe.description}</p>
+                </section>
+
+                <section className="mb-8">
                     <h2 className="text-2xl font-bold mb-4">Ingredients</h2>
                     <ul className="list-none space-y-2">
                         {recipe.ingredients.map((ingredient) => (
@@ -154,7 +159,7 @@ export default function RecipeTemplate({ recipe }: { recipe: RecipeData }) {
                     </section>
                 )}
 
-                <section className="mb-12">
+                <section className="mb-8">
                     <h2 className="text-2xl font-bold mb-4">Nutrition Per 100g</h2>
                     <table className="sm:max-w-[320px] w-full border rounded-lg">
                         <tbody>
@@ -199,6 +204,32 @@ export default function RecipeTemplate({ recipe }: { recipe: RecipeData }) {
                     <p className="text-gray-500 text-sm mt-2">Nutrition information is automatically calculated, so should only be used as an approximation.</p>
                 </section>
 
+                {(recipe.bakingTips || recipe.storageInfo) && (
+                    <section className="bg-gray-100 px-6 py-4 rounded-2xl mb-12">
+                        {recipe.bakingTips && (
+                            <div className="mb-6">
+                                <h2 className="text-2xl font-bold mb-4">Baking Tips</h2>
+                                <ul className="list-disc list-outside pl-4 space-y-2">
+                                    {recipe.bakingTips.map((tip, index) => (
+                                        <li key={index}>{tip}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+
+                        {recipe.storageInfo && (
+                            <div className="mb-6">
+                                <h2 className="text-2xl font-bold mb-4">Storage Information</h2>
+                                <ul className="list-disc list-outside pl-4 space-y-2">
+                                    {recipe.storageInfo.map((info, index) => (
+                                        <li key={index}>{info}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                    </section>
+                )}
+
                 <section className="mb-8">
                     <div className="flex justify-center">
                         <Button variant="secondary" onClick={() => setShowReportModal(true)}>
@@ -220,7 +251,7 @@ export default function RecipeTemplate({ recipe }: { recipe: RecipeData }) {
                         <p className="mb-4">
                             Thank you for helping improve our recipes. Please send any corrections to:
                         </p>
-                        <Link 
+                        <Link
                             to="mailto:mixyourtreat@gmail.com"
                             target="_blank"
                             className="text-purple-500 hover:text-purple-600 underline"
@@ -228,8 +259,8 @@ export default function RecipeTemplate({ recipe }: { recipe: RecipeData }) {
                             mixyourtreat@gmail.com
                         </Link>
                         <div className="mt-6 flex justify-end">
-                            <Button 
-                                variant="secondary" 
+                            <Button
+                                variant="secondary"
                                 onClick={() => setShowReportModal(false)}
                             >
                                 Close

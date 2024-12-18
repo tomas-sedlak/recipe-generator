@@ -2,6 +2,7 @@ interface RecipeData {
     title: string;
     prepTime: string;
     cookTime: string;
+    description: string;
     recipeYield: string;
     previewFolder: string;
     previewItems: string[];
@@ -9,6 +10,8 @@ interface RecipeData {
     instructions: string[];
     notes?: string[];
     nutritionData: NutritionData;
+    bakingTips?: string[];
+    storageInfo?: string[];
 }
 
 interface NutritionData {
