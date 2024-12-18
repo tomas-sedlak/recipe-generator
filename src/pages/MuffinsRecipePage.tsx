@@ -15,11 +15,11 @@ const baseRecipes: { [key: string]: { ingredients: string[], instructions: strin
   "Classic": {
     ingredients: [
       "2 cups all-purpose flour",
-      "½ cup granulated sugar",
+      "1/2 cup granulated sugar",
       "2 tsp baking powder",
-      "½ tsp salt",
+      "1/2 tsp salt",
       "1 cup milk",
-      "⅓ cup vegetable oil",
+      "1/3 cup vegetable oil",
       "2 large eggs",
       "1 tsp vanilla extract"
     ],
@@ -29,19 +29,19 @@ const baseRecipes: { [key: string]: { ingredients: string[], instructions: strin
       "In a large bowl, whisk together flour, sugar, baking powder, and salt",
       "In another bowl, whisk together milk, oil, eggs, and vanilla",
       "Stir wet ingredients into dry ingredients until just combined",
-      "Fill muffin cups ⅔ full",
+      "Fill muffin cups 2/3 full",
       "Bake for 20-25 minutes or until golden brown"
     ]
   },
   "Cocoa": {
     ingredients: [
       "2 cups all-purpose flour",
-      "½ cup cocoa powder",
-      "¾ cup granulated sugar",
+      "1/2 cup cocoa powder",
+      "3/4 cup granulated sugar",
       "2 tsp baking powder",
-      "½ tsp salt",
+      "1/2 tsp salt",
       "1 cup milk",
-      "½ cup vegetable oil",
+      "1/2 cup vegetable oil",
       "2 large eggs",
       "1 tsp vanilla extract"
     ],
@@ -51,20 +51,20 @@ const baseRecipes: { [key: string]: { ingredients: string[], instructions: strin
       "Whisk together flour, cocoa powder, sugar, baking powder, and salt",
       "In another bowl, whisk together milk, oil, eggs, and vanilla",
       "Combine wet and dry ingredients until just mixed",
-      "Fill muffin cups ⅔ full",
+      "Fill muffin cups 2/3 full",
       "Bake for 20-25 minutes until a toothpick comes out clean"
     ]
   },
   "Banana": {
     ingredients: [
       "2 cups all-purpose flour",
-      "½ cup granulated sugar",
+      "1/2 cup granulated sugar",
       "2 tsp baking powder",
-      "½ tsp salt",
+      "1/2 tsp salt",
       "3 ripe bananas, mashed",
-      "⅓ cup vegetable oil",
+      "1/3 cup vegetable oil",
       "2 large eggs",
-      "¼ cup milk",
+      "1/4 cup milk",
       "1 tsp vanilla extract"
     ],
     instructions: [
@@ -73,19 +73,19 @@ const baseRecipes: { [key: string]: { ingredients: string[], instructions: strin
       "Mix flour, sugar, baking powder, and salt",
       "In another bowl, mash bananas and mix with oil, eggs, milk, and vanilla",
       "Fold wet ingredients into dry ingredients",
-      "Fill muffin cups ⅔ full",
+      "Fill muffin cups 2/3 full",
       "Bake for 20-25 minutes until golden"
     ]
   },
   "Carrot": {
     ingredients: [
       "2 cups all-purpose flour",
-      "⅔ cup granulated sugar",
+      "2/3 cup granulated sugar",
       "2 tsp baking powder",
       "1 tsp cinnamon",
-      "½ tsp salt",
+      "1/2 tsp salt",
       "2 cups grated carrots",
-      "⅓ cup vegetable oil",
+      "1/3 cup vegetable oil",
       "2 large eggs",
       "1 cup milk",
       "1 tsp vanilla extract"
@@ -97,21 +97,21 @@ const baseRecipes: { [key: string]: { ingredients: string[], instructions: strin
       "Mix in grated carrots",
       "Whisk together oil, eggs, milk, and vanilla",
       "Stir wet ingredients into carrot mixture",
-      "Fill muffin cups ⅔ full",
+      "Fill muffin cups 2/3 full",
       "Bake for 20-25 minutes until done"
     ]
   },
   "Pumpkin": {
     ingredients: [
       "2 cups all-purpose flour",
-      "¾ cup granulated sugar",
+      "3/4 cup granulated sugar",
       "2 tsp baking powder",
       "1 tsp pumpkin pie spice",
-      "½ tsp salt",
+      "1/2 tsp salt",
       "1 cup pumpkin puree",
-      "½ cup vegetable oil",
+      "1/2 cup vegetable oil",
       "2 large eggs",
-      "¼ cup milk",
+      "1/4 cup milk",
       "1 tsp vanilla extract"
     ],
     instructions: [
@@ -120,7 +120,7 @@ const baseRecipes: { [key: string]: { ingredients: string[], instructions: strin
       "Whisk together flour, sugar, baking powder, pumpkin spice, and salt",
       "In another bowl, combine pumpkin, oil, eggs, milk, and vanilla",
       "Mix wet ingredients into dry ingredients until just combined",
-      "Fill muffin cups ⅔ full",
+      "Fill muffin cups 2/3 full",
       "Bake for 20-25 minutes until done"
     ]
   }
@@ -282,7 +282,7 @@ const recipeNotes: { [key: string]: string[] } = {
   "Classic": [
     "Don't overmix the batter - some lumps are okay",
     "Room temperature ingredients work best",
-    "Fill muffin cups ⅔ full for perfect domes"
+    "Fill muffin cups 2/3 full for perfect domes"
   ],
   "Cocoa": [
     "Use high-quality cocoa powder for best results",
@@ -318,7 +318,7 @@ const MUFFIN_DESCRIPTIONS: { [key: string]: string } = {
 const BAKING_TIPS = [
   "Use room temperature ingredients for the best texture",
   "Don't overmix the batter - some lumps are normal",
-  "Fill muffin cups ⅔ full for perfect domes",
+  "Fill muffin cups 2/3 full for perfect domes",
   "Test doneness with a toothpick in the center",
   "Let muffins cool in the pan for 5 minutes before removing",
   "Use paper liners for easy cleanup and storage"
@@ -383,11 +383,11 @@ export default function MuffinsRecipePage() {
   const baseRecipe = baseRecipes[base] || baseRecipes["Classic"];
   const mixinIngredients = mixins.map(mixin => {
     const amount = mixins.length > 0 ? 1 / mixins.length : 0;
-    const fraction = amount === 0.5 ? "½"
-      : amount === 0.75 ? "¾"
-        : amount === 0.25 ? "¼"
-          : amount === 1.5 ? "1½"
-            : mixins.length === 3 ? "⅓"
+    const fraction = amount === 0.5 ? "1/2"
+      : amount === 0.75 ? "3/4"
+        : amount === 0.25 ? "1/4"
+          : amount === 1.5 ? "1 1/2"
+            : mixins.length === 3 ? "1/3"
               : amount.toString();
     return `${fraction} cup ${mixin}`;
   });

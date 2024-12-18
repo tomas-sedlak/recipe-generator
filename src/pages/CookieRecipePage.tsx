@@ -14,14 +14,14 @@ const COOKIE_YIELD = "24 cookies";
 const baseRecipes: { [key: string]: { ingredients: string[], instructions: string[] } } = {
     "Classic": {
         ingredients: [
-            "2¼ cups all-purpose flour",
+            "2 1/4 cups all-purpose flour",
             "1 cup unsalted butter, softened",
-            "¾ cup granulated sugar",
-            "¾ cup brown sugar",
+            "3/4 cup granulated sugar",
+            "3/4 cup brown sugar",
             "2 large eggs",
             "1 tsp vanilla extract",
             "1 tsp baking soda",
-            "½ tsp salt"
+            "1/2 tsp salt"
         ],
         instructions: [
             "Preheat oven to 375°F (190°C)",
@@ -35,14 +35,14 @@ const baseRecipes: { [key: string]: { ingredients: string[], instructions: strin
     "Cocoa": {
         ingredients: [
             "2 cups all-purpose flour",
-            "⅔ cup unsweetened cocoa powder",
+            "2/3 cup unsweetened cocoa powder",
             "1 cup unsalted butter, softened",
             "1 cup granulated sugar",
-            "½ cup brown sugar",
+            "1/2 cup brown sugar",
             "2 large eggs",
             "2 tsp vanilla extract",
             "1 tsp baking soda",
-            "½ tsp salt"
+            "1/2 tsp salt"
         ],
         instructions: [
             "Preheat oven to 350°F (175°C)",
@@ -56,16 +56,16 @@ const baseRecipes: { [key: string]: { ingredients: string[], instructions: strin
     },
     "Oat": {
         ingredients: [
-            "1½ cups all-purpose flour",
+            "1 1/2 cups all-purpose flour",
             "3 cups old-fashioned oats",
             "1 cup unsalted butter, softened",
-            "¾ cup granulated sugar",
-            "¾ cup brown sugar",
+            "3/4 cup granulated sugar",
+            "3/4 cup brown sugar",
             "2 large eggs",
             "1 tsp vanilla extract",
             "1 tsp baking soda",
             "1 tsp ground cinnamon",
-            "½ tsp salt"
+            "1/2 tsp salt"
         ],
         instructions: [
             "Preheat oven to 350°F (175°C)",
@@ -85,9 +85,9 @@ const baseRecipes: { [key: string]: { ingredients: string[], instructions: strin
             "1 cup granulated sugar",
             "1 cup brown sugar",
             "2 large eggs",
-            "2½ tsp vanilla extract",
+            "2 1/2 tsp vanilla extract",
             "1 tsp baking soda",
-            "½ tsp salt"
+            "1/2 tsp salt"
         ],
         instructions: [
             "Preheat oven to 350°F (175°C)",
@@ -101,15 +101,15 @@ const baseRecipes: { [key: string]: { ingredients: string[], instructions: strin
     },
     "Red Velvet": {
         ingredients: [
-            "2¾ cups all-purpose flour",
-            "¼ cup unsweetened cocoa powder",
+            "2 3/4 cups all-purpose flour",
+            "1/4 cup unsweetened cocoa powder",
             "1 cup unsalted butter, softened",
-            "1½ cups granulated sugar",
+            "1 1/2 cups granulated sugar",
             "2 large eggs",
             "2 tbsp red food coloring",
             "1 tsp vanilla extract",
             "1 tsp baking soda",
-            "½ tsp salt",
+            "1/2 tsp salt",
             "1 cup buttermilk"
         ],
         instructions: [
@@ -341,10 +341,10 @@ export default function CookieRecipePage() {
     const baseRecipe = baseRecipes[base] || baseRecipes["Classic"];
     const mixinIngredients = mixins.map(mixin => {
         const amount = mixins.length > 0 ? 1.5 / mixins.length : 0;
-        const fraction = amount === 0.5 ? "½"
-            : amount === 0.75 ? "¾"
-                : amount === 0.25 ? "¼"
-                    : amount === 1.5 ? "1½"
+        const fraction = amount === 0.5 ? "1/2"
+            : amount === 0.75 ? "3/4"
+                : amount === 0.25 ? "1/4"
+                    : amount === 1.5 ? "1 1/2"
                         : amount.toString();
         return `${fraction} cup ${mixin}`;
     });
