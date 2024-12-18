@@ -245,8 +245,8 @@ export default function RecipeTemplate({ recipe }: { recipe: RecipeData }) {
             </div>
 
             {showReportModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-                    <div className="bg-white rounded-2xl px-6 py-4 max-w-md w-full">
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50" onClick={() => setShowReportModal(false)}>
+                    <div className="bg-white rounded-2xl px-6 py-4 max-w-md w-full" onClick={(e) => e.stopPropagation()}>
                         <h2 className="text-2xl font-bold mb-4">Report a Mistake</h2>
                         <p className="mb-4">
                             Thank you for helping improve our recipes. Please send any corrections to:
