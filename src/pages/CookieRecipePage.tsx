@@ -4,7 +4,9 @@ import RecipeTemplate from '../templates/RecipeTemplate';
 
 // Types
 import RecipeData, { NutritionData } from '../types/RecipeTypes';
-import { formatArray } from '../utils/formatArray';
+import { formatArray } from '../utils/utils';
+import { useParams } from 'react-router-dom';
+import { decodeSlug, generateTitle } from '../utils/cookies';
 
 const COOKIE_PREP_TIME = "15 minutes";
 const COOKIE_COOK_TIME = "10-12 minutes";
@@ -12,7 +14,7 @@ const COOKIE_YIELD = "24 cookies";
 
 // Add recipe data
 const baseRecipes: { [key: string]: { ingredients: string[], instructions: string[] } } = {
-    "Classic": {
+    "classic": {
         ingredients: [
             "2 1/4 cups all-purpose flour",
             "1 cup unsalted butter, softened",
@@ -32,7 +34,7 @@ const baseRecipes: { [key: string]: { ingredients: string[], instructions: strin
             "Bake for 10 to 12 minutes or until golden brown"
         ]
     },
-    "Cocoa": {
+    "cocoa": {
         ingredients: [
             "2 cups all-purpose flour",
             "2/3 cup unsweetened cocoa powder",
@@ -54,7 +56,7 @@ const baseRecipes: { [key: string]: { ingredients: string[], instructions: strin
             "Bake for 9 to 11 minutes until edges are set"
         ]
     },
-    "Oat": {
+    "oat": {
         ingredients: [
             "1 1/2 cups all-purpose flour",
             "3 cups old-fashioned oats",
@@ -77,7 +79,7 @@ const baseRecipes: { [key: string]: { ingredients: string[], instructions: strin
             "Bake for 10 to 12 minutes until edges are lightly browned"
         ]
     },
-    "Peanut Butter": {
+    "peanut-butter": {
         ingredients: [
             "2 cups all-purpose flour",
             "1 cup creamy peanut butter",
@@ -99,7 +101,7 @@ const baseRecipes: { [key: string]: { ingredients: string[], instructions: strin
             "Bake for 10 to 12 minutes until edges are lightly browned"
         ]
     },
-    "Red Velvet": {
+    "red-velvet": {
         ingredients: [
             "2 3/4 cups all-purpose flour",
             "1/4 cup unsweetened cocoa powder",
@@ -126,7 +128,7 @@ const baseRecipes: { [key: string]: { ingredients: string[], instructions: strin
 };
 
 const baseNutrition: { [key: string]: NutritionData } = {
-    "Classic": {
+    "classic": {
         calories: 470,
         fat: 22,
         saturatedFat: 12,
@@ -137,7 +139,7 @@ const baseNutrition: { [key: string]: NutritionData } = {
         sugar: 35,
         protein: 6
     },
-    "Cocoa": {
+    "cocoa": {
         calories: 466,
         fat: 21,
         saturatedFat: 12,
@@ -148,7 +150,7 @@ const baseNutrition: { [key: string]: NutritionData } = {
         sugar: 37,
         protein: 7
     },
-    "Oat": {
+    "oat": {
         calories: 450,
         fat: 19,
         saturatedFat: 10,
@@ -159,7 +161,7 @@ const baseNutrition: { [key: string]: NutritionData } = {
         sugar: 32,
         protein: 8
     },
-    "Peanut Butter": {
+    "peanut-butter": {
         calories: 490,
         fat: 27,
         saturatedFat: 12,
@@ -170,7 +172,7 @@ const baseNutrition: { [key: string]: NutritionData } = {
         sugar: 33,
         protein: 11
     },
-    "Red Velvet": {
+    "red-velvet": {
         calories: 465,
         fat: 22,
         saturatedFat: 12,
@@ -184,7 +186,7 @@ const baseNutrition: { [key: string]: NutritionData } = {
 };
 
 const mixinNutrition: { [key: string]: NutritionData } = {
-    "chocolate chips": {
+    "chocolate-chips": {
         calories: 545,
         fat: 31,
         saturatedFat: 19,
@@ -195,7 +197,7 @@ const mixinNutrition: { [key: string]: NutritionData } = {
         sugar: 57,
         protein: 6
     },
-    "white chocolate": {
+    "white-chocolate": {
         calories: 550,
         fat: 32,
         saturatedFat: 20,
@@ -217,7 +219,7 @@ const mixinNutrition: { [key: string]: NutritionData } = {
         sugar: 6,
         protein: 21
     },
-    "m&ms": {
+    "candy": {
         calories: 485,
         fat: 20,
         saturatedFat: 12,
@@ -243,27 +245,27 @@ const mixinNutrition: { [key: string]: NutritionData } = {
 
 // Add recipe notes after baseRecipes
 const recipeNotes: { [key: string]: string[] } = {
-    "Classic": [
+    "classic": [
         "For softer cookies, reduce baking time by 1-2 minutes",
         "Chill dough for 24 hours for enhanced flavor",
         "Room temperature eggs work best"
     ],
-    "Cocoa": [
+        "cocoa": [
         "Don't overbake - cookies will set as they cool",
         "Use Dutch-processed cocoa for richer flavor",
         "Add a pinch of espresso powder to enhance chocolate flavor"
     ],
-    "Oat": [
+    "oat": [
         "Quick oats can be used but will give a different texture",
         "Toast oats beforehand for nuttier flavor",
         "Let dough rest 30 minutes for softer cookies"
     ],
-    "Peanut Butter": [
+    "peanut-butter": [
         "Natural peanut butter may affect texture",
         "Crunchy peanut butter adds nice texture",
         "Don't overmix after adding flour"
     ],
-    "Red Velvet": [
+    "red-velvet": [
         "Gel food coloring works better than liquid",
         "Don't skip the buttermilk - it's key for texture",
         "Add white chocolate chips for classic flavor"
@@ -272,11 +274,11 @@ const recipeNotes: { [key: string]: string[] } = {
 
 // Add these new constants
 const COOKIE_DESCRIPTIONS: { [key: string]: string } = {
-    "Classic": "Our classic chocolate chip cookies are soft, chewy, and perfectly golden brown. Made with high-quality butter and vanilla, these timeless favorites strike the perfect balance between crispy edges and gooey centers.",
-    "Cocoa": "Rich, decadent chocolate cookies that satisfy even the most intense chocolate cravings. Double the chocolate flavor makes these cookies a chocolate lover's dream come true.",
-    "Oat": "Hearty and wholesome oatmeal cookies with a perfect blend of warming spices. These cookies offer a satisfying chewy texture and nostalgic homemade taste.",
-    "Peanut Butter": "Irresistibly nutty and rich peanut butter cookies that melt in your mouth. Each bite delivers the perfect combination of sweet and salty flavors.",
-    "Red Velvet": "Stunning red velvet cookies with a subtle cocoa flavor and beautiful crimson color. These eye-catching treats are perfect for special occasions or when you want to impress."
+    "classic": "Our classic chocolate chip cookies are soft, chewy, and perfectly golden brown. Made with high-quality butter and vanilla, these timeless favorites strike the perfect balance between crispy edges and gooey centers.",
+    "cocoa": "Rich, decadent chocolate cookies that satisfy even the most intense chocolate cravings. Double the chocolate flavor makes these cookies a chocolate lover's dream come true.",
+    "oat": "Hearty and wholesome oatmeal cookies with a perfect blend of warming spices. These cookies offer a satisfying chewy texture and nostalgic homemade taste.",
+    "peanut-butter": "Irresistibly nutty and rich peanut butter cookies that melt in your mouth. Each bite delivers the perfect combination of sweet and salty flavors.",
+    "red-velvet": "Stunning red velvet cookies with a subtle cocoa flavor and beautiful crimson color. These eye-catching treats are perfect for special occasions or when you want to impress."
 };
 
 const BAKING_TIPS = [
@@ -329,14 +331,10 @@ function calculateTotalNutrition(base: string, mixins: string[]): NutritionData 
 }
 
 export default function CookieRecipePage() {
-    const searchParams = new URLSearchParams(window.location.search);
+    const { slug } = useParams();
+    const { base, mixins } = decodeSlug(slug || '');
 
-    const base = searchParams.get('base') || "Classic";
-    const mixins = (searchParams.get('mixins') || "").split(',').filter(Boolean);
-
-    const recipeTitle = `${base} Cookie Recipe${mixins.length > 0
-        ? ` with ${formatArray(mixins)}`
-        : ''}`;
+    const recipeTitle = generateTitle(base, mixins);
 
     const baseRecipe = baseRecipes[base] || baseRecipes["Classic"];
     const mixinIngredients = mixins.map(mixin => {

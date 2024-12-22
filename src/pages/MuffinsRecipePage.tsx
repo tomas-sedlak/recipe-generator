@@ -4,7 +4,7 @@ import RecipeTemplate from '../templates/RecipeTemplate';
 
 // Types
 import RecipeData, { NutritionData } from '../types/RecipeTypes';
-import { formatArray } from '../utils/formatArray';
+import { formatArray } from '../utils/utils';
 
 const MUFFIN_PREP_TIME = "20 minutes";
 const MUFFIN_COOK_TIME = "20-25 minutes";

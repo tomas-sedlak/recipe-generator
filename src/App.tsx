@@ -13,6 +13,7 @@ import CookieRecipePage from './pages/CookieRecipePage';
 import GenerateMuffinsPage from './pages/GenerateMuffinsPage';
 import MuffinsRecipePage from './pages/MuffinsRecipePage';
 import NotFoundPage from './pages/NotFoundPage';
+import Recipes from './pages/Recipes';
 
 const App = () => {
   return (
@@ -27,12 +28,15 @@ const App = () => {
             <Route path="/" element={<HomePage />} />
             
             {/* Cookies */}
-            <Route path="/cookies/generate" element={<GenerateCookiesPage />} />
-            <Route path="/cookies" element={<CookieRecipePage />} />
+            <Route path="/cookies" element={<GenerateCookiesPage />} />
+            {/* <Route path="/cookies/:slug" element={<CookieRecipePage />} /> */}
 
             {/* Muffins */}
             <Route path="/muffins/generate" element={<GenerateMuffinsPage />} />
             <Route path="/muffins" element={<MuffinsRecipePage />} />
+
+            {/* Recipes */}
+            <Route path="/recipes/:slug" element={<Recipes />} />
 
             {/* 404 */}
             <Route path="*" element={<NotFoundPage />} />

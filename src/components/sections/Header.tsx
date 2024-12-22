@@ -29,7 +29,7 @@ export default function Header() {
                 {/* Desktop Navigation */}
                 <nav className="hidden sm:flex items-center gap-x-6">
                     <Link
-                        to="/cookies/generate"
+                        to="/cookies"
                         className={`text-lg ${location.pathname.startsWith('/cookies')
                             ? 'text-purple-600 font-semibold'
                             : 'text-gray-600 hover:text-gray-900'

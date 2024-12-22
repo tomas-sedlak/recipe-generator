@@ -9,11 +9,8 @@ import Card from "../components/common/Card";
 import Button from "../components/common/Button";
 import Preview from "../components/common/Preview";
 
-// Base Items with dynamic image paths
-const baseItems: string[] = ["Classic", "Cocoa", "Oat", "Peanut Butter", "Red Velvet"]
-
-// Mixin Items with dynamic image paths
-const mixinItems: string[] = ["Chocolate Chips", "Nuts", "Raisins", "Dried Fruits", "Candy", "Mini Marshmallows", "Sprinkles"]
+// Data
+import { baseItems, generateSlug, mixinItems } from "../utils/cookies";
 
 export default function GenerateCookiesPage() {
   const [base, setBase] = useState<string>(baseItems[0]);
@@ -59,14 +56,9 @@ export default function GenerateCookiesPage() {
     setIsGenerating(true);
 
     // Show loading state for random seconds
-    await new Promise(resolve => setTimeout(resolve, Math.random() * 1000 + 1000));
+    // await new Promise(resolve => setTimeout(resolve, Math.random() * 1000 + 1000));
 
-    const searchParams = new URLSearchParams({
-      base: base,
-      mixins: mixins.join(','),
-    });
-
-    navigate(`/cookies?${searchParams.toString()}`);
+    navigate(`/recipes/${generateSlug(base, mixins)}`);
   };
 
   if (isGenerating) {
