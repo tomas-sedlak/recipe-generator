@@ -9,9 +9,7 @@ import Footer from './components/sections/Footer';
 // Import pages
 import HomePage from './pages/HomePage';
 import GenerateCookiesPage from './pages/GenerateCookiesPage';
-import CookieRecipePage from './pages/CookieRecipePage';
 import GenerateMuffinsPage from './pages/GenerateMuffinsPage';
-import MuffinsRecipePage from './pages/MuffinsRecipePage';
 import NotFoundPage from './pages/NotFoundPage';
 import Recipes from './pages/Recipes';
 
@@ -27,13 +25,9 @@ const App = () => {
           <Routes>
             <Route path="/" element={<HomePage />} />
             
-            {/* Cookies */}
+            {/* Generate */}
             <Route path="/cookies" element={<GenerateCookiesPage />} />
-            {/* <Route path="/cookies/:slug" element={<CookieRecipePage />} /> */}
-
-            {/* Muffins */}
-            <Route path="/muffins/generate" element={<GenerateMuffinsPage />} />
-            <Route path="/muffins" element={<MuffinsRecipePage />} />
+            <Route path="/muffins" element={<GenerateMuffinsPage />} />
 
             {/* Recipes */}
             <Route path="/recipes/:slug" element={<Recipes />} />

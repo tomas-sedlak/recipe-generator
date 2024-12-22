@@ -47,7 +47,7 @@ export default function HomePage() {
             <section id="recipe-types" aria-label="Recipe Types" className="max-w-screen-lg w-full mx-auto px-4 mb-8 md:mb-16">
                 <div className="grid md:grid-cols-2 gap-x-6 gap-y-4">
                     <Link
-                        to="/cookies/generate"
+                        to="/cookies"
                         className="group relative bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-4 transition-all"
                     >
                         <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
@@ -68,7 +68,7 @@ export default function HomePage() {
                     </Link>
 
                     <Link
-                        to="/muffins/generate"
+                        to="/muffins"
                         className="group relative bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-4"
                     >
                         <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">

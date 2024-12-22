@@ -38,7 +38,7 @@ export default function Header() {
                         🍪 Cookies
                     </Link>
                     <Link
-                        to="/muffins/generate"
+                        to="/muffins"
                         className={`text-lg ${location.pathname.startsWith('/muffins')
                             ? 'text-purple-600 font-semibold'
                             : 'text-gray-600 hover:text-gray-900'
@@ -53,7 +53,7 @@ export default function Header() {
             <div className={`sm:hidden ${isMenuOpen ? 'block' : 'hidden'}`}>
                 <nav className="flex flex-col bg-white">
                     <Link
-                        to="/cookies/generate"
+                        to="/cookies"
                         onClick={() => setIsMenuOpen(false)}
                         className={`px-4 py-4 text-base ${location.pathname.startsWith('/cookies')
                             ? 'text-purple-600 font-semibold bg-purple-50'
@@ -63,7 +63,7 @@ export default function Header() {
                         🍪 Cookies
                     </Link>
                     <Link
-                        to="/muffins/generate"
+                        to="/muffins"
                         onClick={() => setIsMenuOpen(false)}
                         className={`px-4 py-4 text-base ${location.pathname.startsWith('/muffins')
                             ? 'text-purple-600 font-semibold bg-purple-50'

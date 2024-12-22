@@ -56,7 +56,7 @@ export default function GenerateCookiesPage() {
     setIsGenerating(true);
 
     // Show loading state for random seconds
-    // await new Promise(resolve => setTimeout(resolve, Math.random() * 1000 + 1000));
+    await new Promise(resolve => setTimeout(resolve, Math.random() * 1000 + 1000));
 
     navigate(`/recipes/${generateSlug(base, mixins)}`);
   };
