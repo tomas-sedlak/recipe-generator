@@ -6,7 +6,7 @@ import RecipeTemplate from '../templates/RecipeTemplate';
 import RecipeData, { NutritionData } from '../types/RecipeTypes';
 import { formatArray } from '../utils/utils';
 import { useParams } from 'react-router-dom';
-import { decodeSlug, generateTitle } from '../utils/cookies';
+import { decodeSlug, generateTitle } from '../data/cookies';
 
 const COOKIE_PREP_TIME = "15 minutes";
 const COOKIE_COOK_TIME = "10-12 minutes";

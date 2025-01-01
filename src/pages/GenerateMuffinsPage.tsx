@@ -8,14 +8,8 @@ import Card from "../components/common/Card";
 import Button from "../components/common/Button";
 import Preview from "../components/common/Preview";
 
-// Base Items with dynamic image paths
-const baseItems: string[] = ["Classic", "Cocoa", "Banana", "Carrot", "Pumpkin"];
-
-// Mixin Items with dynamic image paths
-const mixinItems: string[] = ["Chocolate Chunks", "Nuts", "Blueberries", "Candy", "Mini Marshmallows"];
-
-// Frosting Items with dynamic image paths
-const frostingItems: string[] = ["Vanilla", "Chocolate", "Caramel"];
+// Data
+import { baseItems, mixinItems, frostingItems, generateSlug } from "../data/muffins";
 
 export default function GenerateMuffinsPage() {
   const [base, setBase] = useState<string>(baseItems[0]);
@@ -68,13 +62,9 @@ export default function GenerateMuffinsPage() {
     // Show loading state for random seconds
     await new Promise(resolve => setTimeout(resolve, Math.random() * 1000 + 1000));
 
-    const searchParams = new URLSearchParams({
-      base: base,
-      ...(frosting && { frosting }),
-      mixins: mixins.join(','),
-    });
+    const slug = generateSlug(base, mixins, frosting);
 
-    navigate(`/muffins?${searchParams.toString()}`);
+    navigate(`/recipes/${slug}`);
   };
 
   if (isGenerating) {

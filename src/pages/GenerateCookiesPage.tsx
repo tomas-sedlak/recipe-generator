@@ -10,7 +10,7 @@ import Button from "../components/common/Button";
 import Preview from "../components/common/Preview";
 
 // Data
-import { baseItems, generateSlug, mixinItems } from "../utils/cookies";
+import { baseItems, generateSlug, mixinItems } from "../data/cookies";
 
 export default function GenerateCookiesPage() {
   const [base, setBase] = useState<string>(baseItems[0]);

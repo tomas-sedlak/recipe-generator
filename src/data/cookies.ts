@@ -1,5 +1,5 @@
 import RecipeData, { NutritionData } from "../types/RecipeTypes";
-import { formatArray, getRecipeName } from "./utils";
+import { formatArray, getRecipeName } from "../utils/utils";
 
 // Base Items with dynamic image paths
 const baseItems: string[] = ["classic", "cocoa", "oat", "peanut-butter", "red-velvet"]
