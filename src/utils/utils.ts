@@ -1,7 +1,3 @@
-const getRecipeType = (name: string) => {
-    return name.split('-')[1];
-}
-
 const getRecipeName = (name: string) => {
     return name.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 }
